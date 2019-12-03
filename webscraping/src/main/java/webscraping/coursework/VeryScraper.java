@@ -22,6 +22,11 @@ public class VeryScraper extends Thread {
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
 
+        // Create objects to store info from website
+        Product product = new Product();
+        Laptop laptop = new Laptop();
+        Url url = new Url();
+        
         public void run() {
             runThread = true;
             System.out.println("Scraping www.very.co.uk laptops...");

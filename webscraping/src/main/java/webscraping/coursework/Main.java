@@ -8,32 +8,40 @@ import org.springframework.context.annotation.*;
  */
 public class Main {
     public static void main(String[] args) { 
-        LaptopsDirectScraper laptopsDirect = new LaptopsDirectScraper();
-        EBuyerScraper eBuyer = new EBuyerScraper();
-        VeryScraper very = new VeryScraper();
-        LaptopOutletScraper laptopOutlet = new LaptopOutletScraper();
-        BoxScraper box = new BoxScraper();
-        
-        laptopsDirect.start();
-        eBuyer.start();
-        very.start();
-        laptopOutlet.start();
-        box.start();
-        
-        //Wait for threads to finish - join can throw an InterruptedException
-        try{
+        runThreads();
+    }
+    
+    static void runThreads(){
+            
+    //Instruct Spring to create and wire beans using XML file
+    ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+    
+    // Get LaptopsDirect bean
+    LaptopsDirectScraper laptopsDirect = (LaptopsDirectScraper) context.getBean("laptopsDirectScraper");
+    
+    // Get EBuyer bean
+    EBuyerScraper eBuyer = (EBuyerScraper) context.getBean("eBuyerScraper");
+    
+    // Get Very bean
+    VeryScraper very = (VeryScraper) context.getBean("veryScraper");
+    
+    // Get LaptopOutlet bean
+    LaptopOutletScraper laptopOutlet = (LaptopOutletScraper) context.getBean("laptopOutletScraper");
+    
+    // Get Box bean
+    BoxScraper box = (BoxScraper) context.getBean("boxScraper");
+    
+    // Join threads
+    try{
             laptopsDirect.join();
             eBuyer.join();
             very.join();
             laptopOutlet.join();
             box.join();
-        }
-        catch(InterruptedException ex){
+    }
+    catch(InterruptedException ex){
             System.out.println("Interrupted exception thrown: " + ex.getMessage());
         }
-        
-        System.out.println("Web scraping complete");
-        System.out.println("END OF PROGRAM");
-        
-    }
+    } 
 }
+

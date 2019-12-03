@@ -23,6 +23,11 @@ public class BoxScraper extends Thread{
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
         
+        // Create objects to store info from website
+        Product product = new Product();
+        Laptop laptop = new Laptop();
+        Url url = new Url();
+        
         public void run() {
             runThread = true;
             System.out.println("Scraping www.box.co.uk laptops...");
@@ -53,18 +58,21 @@ public class BoxScraper extends Thread{
             
                         //Get the product description
                         Elements description = prods.get(i).select(".p-list-points");
-                    
+                        product.setDescription(description.text());
+                        
                         //Get the product price
                         Elements priceClass = prods.get(i).select(".p-list-sell");
                         String priceString = priceClass.text().substring(1).replace(",","");
                         String[] priceArray = priceString.split("\\s+");
                         String priceArrayString = priceArray[0];
                         double price = Double.parseDouble(priceArrayString);
+                        laptop.setPrice(price);
                         
                         //Get laptops brand
                         Elements brandClass = prods.get(i).select("div.p-list-section.p-list-section-middle");
                         Elements brand = brandClass.get(0).select("h3");
-                    
+                        product.setBrand(brand.text());
+                        
                         //Get the image
                         Elements imageUrlDiv = prods.get(i).select("div.p-list");
                         Elements imageUrlClass = imageUrlDiv.get(0).select("div.p-list-section.p-list-section-left");
@@ -72,20 +80,24 @@ public class BoxScraper extends Thread{
                         Elements imageUrlA = imageUrlTable.get(0).select("a");
                         Element imageUrlAClass = imageUrlTable.get(0).select("img").last();
                         String imageUrl = imageUrlAClass.attr("data-src");
-                    
+                        product.setImageUrl(imageUrl);
+                        
                         //Get the items url
                         Elements productUrlTable = imageUrlClass.get(0).select("table.p-list-image");
                         Elements productUrlTbody = productUrlTable.get(0).select("tbody");
                         Elements productUrlTr = productUrlTbody.get(0).select("tr");
                         Elements productUrlTd = productUrlTr.get(0).select("td");
                         Element productUrlA = productUrlTd.get(0).select("a").first();
-                        String productUrl = productUrlA.attr("href");
-            
+                        String domain = "https://www.box.co.uk";
+                        String productUrl = domain.concat(productUrlA.attr("href"));
+                        url.setDomain(domain);
+                        url.setPath(productUrlA.attr("href"));
+                        
                         //Output the data that we have downloaded
                         System.out.println("\n box.co.uk description: " + description.text() + 
                                            ";\n box.co.uk price: " + price + 
                                            ";\n box.co.uk brand: " + brand.text() +
-                                           ";\n box.co.uk image url: https://www.box.co.uk" + imageUrl +
+                                           ";\n box.co.uk image url: " + imageUrl +
                                            ";\n box.co.uk product url: " + productUrl);
                     }
                 }

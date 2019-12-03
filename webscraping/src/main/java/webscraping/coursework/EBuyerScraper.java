@@ -23,6 +23,11 @@ public class EBuyerScraper extends Thread{
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
         
+        // Create objects to store info from website
+        Product product = new Product();
+        Laptop laptop = new Laptop();
+        Url url = new Url();
+        
         public void run() {
             runThread = true;
             System.out.println("Scraping www.ebuyer.com laptops...");
@@ -81,8 +86,8 @@ public class EBuyerScraper extends Thread{
                         //Get the items url
                         Element productUrlA = brandClass.get(0).select("a").first();
                         String productUrlHref = productUrlA.attr("href");
-                        String url = "https://www.ebuyer.com";
-                        String productUrl = url.concat(productUrlHref);
+                        String domain = "https://www.ebuyer.com";
+                        String productUrl = domain.concat(productUrlHref);
             
                         //Output the data that we have downloaded
                         System.out.println("\n ebuyer.com description: " + description.text() + 

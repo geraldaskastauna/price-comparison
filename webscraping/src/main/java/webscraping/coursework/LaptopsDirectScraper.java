@@ -22,6 +22,11 @@ public class LaptopsDirectScraper extends Thread{
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
         
+        // Create objects to store info from website
+        Product product = new Product();
+        Laptop laptop = new Laptop();
+        Url url = new Url();
+        
         public void run() {
             runThread = true;
             System.out.println("Scraping www.laptopsdirect.co.uk laptops...");
@@ -82,8 +87,8 @@ public class LaptopsDirectScraper extends Thread{
                     
                         //Get the items url
                         Element itemUrlA = imageUrlClass.get(0).select("a").last();
-                        String url = "https://www.laptopsdirect.co.uk";
-                        String productUrl = url.concat(itemUrlA.attr("href"));
+                        String domain = "https://www.laptopsdirect.co.uk";
+                        String productUrl = domain.concat(itemUrlA.attr("href"));
             
                         //Output the data that we have downloaded
                         System.out.println("\n LaptopsDirect description: " + description.text() + 
