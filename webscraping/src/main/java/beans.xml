@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans     
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id = "myLaptop" class = "webscraping.coursework1.Laptop">
+        <property name = "brand" ref = "laptopBrand" />
+        <property name = "price" ref = "laptopPrice" />
+        <property name = "description" ref = "laptopDescription" />
+        <property name = "productUrl" ref = "laptopProductUrl" />
+        <property name = "imageUrl" ref = "laptopImageUrl" />
+    </bean>
+    
+    <bean id = "laptopBrand" class = "webscraping.coursework1.Laptop">
+        <property name = "brand" value = "brand" />
+    </bean>
+    
+    <bean id = "laptopPrice" class = "webscraping.coursework1.Laptop">
+        <property name = "price" value = "product price" />
+    </bean>
+    
+    <bean id = "laptopDescription" class = "webscraping.coursework1.Laptop">
+        <property name = "description" value = "Description of the laptop" />
+    </bean>
+    
+    <bean id = "laptopProductUrl" class = "webscraping.coursework1.Laptop">
+        <property name = "productUrl" value = "Product url" />
+    </bean>
+    
+    <bean id = "laptopImageUrl" class = "webscraping.coursework1.Laptop">
+        <property name = "imageUrl" value = "Image url" />
+    </bean>
+</beans>
