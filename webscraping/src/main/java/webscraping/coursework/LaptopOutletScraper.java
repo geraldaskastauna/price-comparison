@@ -47,6 +47,7 @@ public class LaptopOutletScraper extends Thread{
                         
                         //Get the product description
                         Elements description = prods.get(i).select(".product-name");
+                        product.setDescription(description.text());
                     
                         //Get the product price
                         Elements finalPrice = prods.get(i).select("div.price-box");
@@ -55,22 +56,28 @@ public class LaptopOutletScraper extends Thread{
                         String[] priceArray = priceString.split("\\s+");
                         String priceArrayString = priceArray[0];
                         double price = Double.parseDouble(priceArrayString);
-
+                        laptop.setPrice(price);
+                        
                         //Get the brand
                         Elements brandA = description.get(0).select("a");
                         String brand = brandA.text();
                         String[] brandArray = brand.split("\\s+");
                         brand = brandArray[0];
-                    
+                        product.setBrand(brand);
+                        
                         //Get image url
                         Elements imageUrlClass = prods.get(i).select(".product-image-wrap");
                         Elements imageUrlA = imageUrlClass.get(0).select("a");
                         Element imageUrlAClass = imageUrlA.get(0).select("img").last();
                         String imageUrl = imageUrlAClass.attr("src");
-                    
+                        product.setImageUrl(imageUrl);
+                        
                         //Get product url
                         Element productUrlHref = imageUrlA.get(0).select("a").first();
                         String productUrl = productUrlHref.attr("href");
+                        String domain = "https://www.laptopoutlet.co.uk/";
+                        url.setDomain(domain);
+                       // url.setPath(productUrl.replace("https://www.laptopoutlet.co.uk/", ""));
                     
                         //Output the data that we have downloaded
                         System.out.println("\n laptopoutlet.co.uk description: " + description.text() + 

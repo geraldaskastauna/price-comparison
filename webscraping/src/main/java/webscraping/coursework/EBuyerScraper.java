@@ -53,7 +53,8 @@ public class EBuyerScraper extends Thread{
 
                         //Get the product description
                         Elements description = prods.get(i).select(".grid-item__ksp");
-                    
+                        product.setDescription(description.text());
+                        
                         //Get the product price
                         Elements priceClass = prods.get(i).select("p.price");
                        
@@ -69,6 +70,7 @@ public class EBuyerScraper extends Thread{
                             String priceArrayString = priceArray[1];
                             price = Double.parseDouble(priceArrayString);
                         }
+                        laptop.setPrice(price);
                         
                         //Get laptops brand
                         Elements brandClass = prods.get(i).select("h3.grid-item__title");
@@ -76,19 +78,23 @@ public class EBuyerScraper extends Thread{
                         String brand = brandA.text();
                         String[] brandArray = brand.split("\\s+");
                         brand = brandArray[0];
-                    
+                        product.setBrand(brand);
+                        
                         //Get the image
                         Elements imageUrlDiv = prods.get(i).select("div.grid-item__img");
                         Elements imageUrlA = imageUrlDiv.get(0).select("a");
                         Element imageUrlAClass = imageUrlA.get(0).select("img").last();
                         String imageUrl = imageUrlAClass.attr("src");
-                    
+                        product.setImageUrl(imageUrl);
+                        
                         //Get the items url
                         Element productUrlA = brandClass.get(0).select("a").first();
                         String productUrlHref = productUrlA.attr("href");
                         String domain = "https://www.ebuyer.com";
                         String productUrl = domain.concat(productUrlHref);
-            
+                        url.setDomain(domain);
+                        url.setPath(productUrlA.attr("href"));
+                        
                         //Output the data that we have downloaded
                         System.out.println("\n ebuyer.com description: " + description.text() + 
                                            ";\n ebuyer.com price: " + (price == 0 ? outOfStock : price) + 
