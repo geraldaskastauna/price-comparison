@@ -36,7 +36,7 @@ public class Hibernate {
             StandardServiceRegistryBuilder standardServiceRegistryBuilder = new StandardServiceRegistryBuilder();
 
             //Load configuration from hibernate configuration file
-            standardServiceRegistryBuilder.configure("resources/hibernate.cfg.xml"); 
+            standardServiceRegistryBuilder.configure("hibernate.cfg.xml"); 
 
             //Create the registry that will be used to build the session factory
             StandardServiceRegistry registry = standardServiceRegistryBuilder.build();
