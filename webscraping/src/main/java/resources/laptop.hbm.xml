@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="eu.davidgamez.hibernate.CerealXml" table="cereals">
+  <class name="webscraping.coursework.Laptop" table="laptops">
     <id name="id" type="int">
       <column name="id"/>
       <generator class="increment"/>
     </id>
-    <property name="productTypeId" type="int">
-      <column name="product_type_id"/>
+    <property name="urlId" type="int">
+      <column name="url_id"/>
     </property>
-    <property name="brandId" type="int">
-      <column name="brand_id"/>
-    </property>
-    <property name="weight" type="int">
-      <column name="weight"/>
+    <property name="productsId" type="int">
+      <column name="products_id"/>
     </property>
     <property name="price" type="float">
       <column name="price"/>
-    </property>
-    <property name="urlId" type="int">
-      <column name="url_id"/>
     </property>
   </class>
 </hibernate-mapping>

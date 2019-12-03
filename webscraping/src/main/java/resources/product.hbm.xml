@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="webscraping.coursework.Product" table="products">
+    <id name="id" type="int">
+      <column name="id"/>
+      <generator class="increment"/>
+    </id>
+    <property name="brand" type="varchar">
+      <column name="brand"/>
+    </property>
+    <property name="description" type="varchar">
+      <column name="description"/>
+    </property>
+    <property name="imageUrl" type="varchar">
+      <column name="image_url"/>
+    </property>
+  </class>
+</hibernate-mapping>
