@@ -5,28 +5,25 @@
  */
 package webscraping.coursework;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+//Hibernate imports
+import java.util.List;
+import org.hibernate.*;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import java.util.List;
-/**
- *
- * @author linux
- */
+
 /** Simple Hibernate example that uses XML files to specify the mapping between 
  *  a Cereal object and the cereals table in the price_comparison database. */
 public class Hibernate {
     //Use this class to create new Sessions to interact with the database 
     private SessionFactory sessionFactory;
-        
+    
     /** Empty constructor */
     Hibernate() {
-        
-    }
     
+    }
+  
     /** Sets up the session factory.
      *  Call this method first.
      */
@@ -61,5 +58,10 @@ public class Hibernate {
             // Make sure you log the exception, as it might be swallowed
             System.err.println("SessionFactory creation failed." + ex);
         }
+    }
+    
+    /** Closes Hibernate down and stops its threads from running*/
+    public void shutDown(){
+        sessionFactory.close();
     }
 }
