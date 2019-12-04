@@ -79,6 +79,10 @@ public class EBuyerScraper extends Thread{
                         String brand = brandA.text();
                         String[] brandArray = brand.split("\\s+");
                         brand = brandArray[0];
+                        // Check for word Refurbished
+                        if(brand.contains("REFURBISHED"))
+                            brand = brandArray[1];
+                                
                         product.setBrand(brand);
                         
                         //Get the image
