@@ -51,8 +51,10 @@ public class VeryScraper extends Thread {
                     //Work through the products
                     for(int i=0; i<prods.size(); i++){
                         //Get the product description
-                        Elements description = prods.get(i).select(".productBrandDesc");
-                    
+                        Elements descriptionClass = prods.get(i).select(".productBrandDesc");
+                        String description = descriptionClass.text();
+                        product.setDescription(description);
+                        
                         //Get the product price
                         Elements priceClass = prods.get(i).select(".productPrice");
                         
@@ -69,24 +71,31 @@ public class VeryScraper extends Thread {
                         
                         // Get a double value from string array;
                         double price = Double.parseDouble(priceArrayString);
+                        laptop.setPrice(price);
                         
                         //Get the brand
-                        Elements brand = prods.get(i).select(".productBrand");
-            
+                        Elements brandClass = prods.get(i).select(".productBrand");
+                        String brand = brandClass.text();
+                        product.setBrand(brand);
+                        
                         //Get the image url
                         Elements imageUrlClass = prods.get(i).select(".productMainImage");
                         Element imageUrlImg = imageUrlClass.get(0).select("img").last();
                         String imageUrl = imageUrlImg.attr("src");
-                    
+                        product.setImageUrl(imageUrl);
+                        
                         //Get the product url
                         Elements productUrlClass = prods.get(i).select(".productMainImage");
                         Element productUrlA = productUrlClass.get(0).select("a").first();
                         String productUrl = productUrlA.attr("href");
-                    
+                        String domain = "http://www.very.co.uk";
+                        url.setDomain(domain);
+                        url.setPath(productUrl);
+                        
                         //Output the data that we have downloaded
-                        System.out.println("\n very.co.uk description: " + description.text() + 
+                        System.out.println("\n very.co.uk description: " + description + 
                                            ";\n very.co.uk price: " + price + 
-                                           ";\n very.co.uk brand: " + brand.text() +
+                                           ";\n very.co.uk brand: " + brand +
                                            ";\n very.co.uk image url: " + imageUrl +
                                            ";\n very.co.uk product url: " + productUrl);
                     }

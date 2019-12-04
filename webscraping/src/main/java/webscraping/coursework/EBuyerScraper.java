@@ -52,8 +52,9 @@ public class EBuyerScraper extends Thread{
                     for(int i=0; i<prods.size(); ++i){
 
                         //Get the product description
-                        Elements description = prods.get(i).select(".grid-item__ksp");
-                        product.setDescription(description.text());
+                        Elements descriptionClass = prods.get(i).select(".grid-item__ksp");
+                        String description = descriptionClass.text();
+                        product.setDescription(description);
                         
                         //Get the product price
                         Elements priceClass = prods.get(i).select("p.price");
@@ -96,7 +97,7 @@ public class EBuyerScraper extends Thread{
                         url.setPath(productUrlA.attr("href"));
                         
                         //Output the data that we have downloaded
-                        System.out.println("\n ebuyer.com description: " + description.text() + 
+                        System.out.println("\n ebuyer.com description: " + description + 
                                            ";\n ebuyer.com price: " + (price == 0 ? outOfStock : price) + 
                                            ";\n ebuyer.com brand: " + brand +
                                            ";\n ebuyer.com image url: " + imageUrl +

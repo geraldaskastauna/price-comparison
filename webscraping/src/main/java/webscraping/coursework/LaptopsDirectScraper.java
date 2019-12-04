@@ -60,38 +60,46 @@ public class LaptopsDirectScraper extends Thread{
                     for(int i=0; i<prods.size(); ++i){
             
                         //Get the product description
-                        Elements description = prods.get(i).select(".productInfo");
-                    
+                        Elements descriptionClass = prods.get(i).select(".productInfo");
+                        String description = descriptionClass.text();
+                        product.setDescription(description);
+                        
                         //Get the product price
                         Elements priceClass = prods.get(i).select(".offerprice");
                         String priceString = priceClass.text().substring(1).replace(",","");
                         String[] priceArray = priceString.split("\\s+");
                         String priceArrayString = priceArray[0];
                         double price = Double.parseDouble(priceArrayString);
- 
+                        laptop.setPrice(price);
+                        
                         //Get the brand
                         Elements brandClass = prods.get(i).select("a.offerboxtitle");
                         String brandA = brandClass.text();
                         String[] brandArray = brandA.split("\\s+");
                         String brand = brandArray[0];
-                        
+                                                
                         // Check for word Refurbished
                         if(brand.contains("Refurbished"))
                             brand = brandArray[1];
-                                            
+                                
+                        product.setBrand(brand);
+                        
                         //Get the image
                         Elements imageUrlClass = prods.get(i).select(".sr_image");
                         Elements imageUrlA = imageUrlClass.get(0).select(".offerImage");
                         Element imageUrlImg = imageUrlA.get(0).select("img").last();
                         String imageUrl = "https://www.laptopsdirect.co.uk" + imageUrlImg.attr("src");
-                    
+                        product.setImageUrl(imageUrl);
+                        
                         //Get the items url
                         Element itemUrlA = imageUrlClass.get(0).select("a").last();
                         String domain = "https://www.laptopsdirect.co.uk";
                         String productUrl = domain.concat(itemUrlA.attr("href"));
-            
+                        url.setDomain(domain);
+                        url.setPath(productUrl);
+                        
                         //Output the data that we have downloaded
-                        System.out.println("\n LaptopsDirect description: " + description.text() + 
+                        System.out.println("\n LaptopsDirect description: " + description + 
                                            ";\n LaptopsDirect price: " + price + 
                                            ";\n LaptopsDirect brand: " + brand +
                                            ";\n LaptopsDirect image url: " + imageUrl +

@@ -57,8 +57,9 @@ public class BoxScraper extends Thread{
                     for(int i=0; i<prods.size(); ++i){
             
                         //Get the product description
-                        Elements description = prods.get(i).select(".p-list-points");
-                        product.setDescription(description.text());
+                        Elements descriptionClass = prods.get(i).select(".p-list-points");
+                        String description = descriptionClass.text();
+                        product.setDescription(description);
                         
                         //Get the product price
                         Elements priceClass = prods.get(i).select(".p-list-sell");
@@ -70,8 +71,9 @@ public class BoxScraper extends Thread{
                         
                         //Get laptops brand
                         Elements brandClass = prods.get(i).select("div.p-list-section.p-list-section-middle");
-                        Elements brand = brandClass.get(0).select("h3");
-                        product.setBrand(brand.text());
+                        Elements brandH = brandClass.get(0).select("h3");
+                        String brand = brandH.text();
+                        product.setBrand(brand);
                         
                         //Get the image
                         Elements imageUrlDiv = prods.get(i).select("div.p-list");
@@ -94,9 +96,9 @@ public class BoxScraper extends Thread{
                         url.setPath(productUrlA.attr("href"));
                         
                         //Output the data that we have downloaded
-                        System.out.println("\n box.co.uk description: " + description.text() + 
+                        System.out.println("\n box.co.uk description: " + description + 
                                            ";\n box.co.uk price: " + price + 
-                                           ";\n box.co.uk brand: " + brand.text() +
+                                           ";\n box.co.uk brand: " + brand +
                                            ";\n box.co.uk image url: " + imageUrl +
                                            ";\n box.co.uk product url: " + productUrl);
                     }

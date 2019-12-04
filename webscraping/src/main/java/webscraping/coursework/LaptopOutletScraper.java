@@ -46,8 +46,9 @@ public class LaptopOutletScraper extends Thread{
                     for(int i=0; i<prods.size(); ++i){
                         
                         //Get the product description
-                        Elements description = prods.get(i).select(".product-name");
-                        product.setDescription(description.text());
+                        Elements descriptionClass = prods.get(i).select(".product-name");
+                        String description = descriptionClass.text();
+                        product.setDescription(description);
                     
                         //Get the product price
                         Elements finalPrice = prods.get(i).select("div.price-box");
@@ -59,7 +60,7 @@ public class LaptopOutletScraper extends Thread{
                         laptop.setPrice(price);
                         
                         //Get the brand
-                        Elements brandA = description.get(0).select("a");
+                        Elements brandA = descriptionClass.get(0).select("a");
                         String brand = brandA.text();
                         String[] brandArray = brand.split("\\s+");
                         brand = brandArray[0];
@@ -77,10 +78,10 @@ public class LaptopOutletScraper extends Thread{
                         String productUrl = productUrlHref.attr("href");
                         String domain = "https://www.laptopoutlet.co.uk/";
                         url.setDomain(domain);
-                       // url.setPath(productUrl.replace("https://www.laptopoutlet.co.uk/", ""));
+                        url.setPath(productUrl.replace("https://www.laptopoutlet.co.uk/", ""));
                     
                         //Output the data that we have downloaded
-                        System.out.println("\n laptopoutlet.co.uk description: " + description.text() + 
+                        System.out.println("\n laptopoutlet.co.uk description: " + description + 
                                            ";\n laptopoutlet.co.uk price: " + price + 
                                            ";\n laptopoutlet.co.uk brand: " + brand +
                                            ";\n laptopoutlet.co.uk image url: " + imageUrl +
