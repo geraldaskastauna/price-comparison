@@ -97,13 +97,7 @@ public class LaptopsDirectScraper extends Thread{
                         String productUrl = domain.concat(itemUrlA.attr("href"));
                         url.setDomain(domain);
                         url.setPath(productUrl);
-                        
-                        //Output the data that we have downloaded
-                        System.out.println("\n LaptopsDirect description: " + description + 
-                                           ";\n LaptopsDirect price: " + price + 
-                                           ";\n LaptopsDirect brand: " + brand +
-                                           ";\n LaptopsDirect image url: " + imageUrl +
-                                           ";\n LaptopsDirect item url: " + productUrl);
+
                     }
                 }
                 sleep(1000 * crawlDelay);

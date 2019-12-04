@@ -79,13 +79,7 @@ public class LaptopOutletScraper extends Thread{
                         String domain = "https://www.laptopoutlet.co.uk/";
                         url.setDomain(domain);
                         url.setPath(productUrl.replace("https://www.laptopoutlet.co.uk/", ""));
-                    
-                        //Output the data that we have downloaded
-                        System.out.println("\n laptopoutlet.co.uk description: " + description + 
-                                           ";\n laptopoutlet.co.uk price: " + price + 
-                                           ";\n laptopoutlet.co.uk brand: " + brand +
-                                           ";\n laptopoutlet.co.uk image url: " + imageUrl +
-                                           ";\n laptopoutlet.co.uk product url: " + productUrl);
+
                     }
                 }
                 sleep(1000 * crawlDelay);

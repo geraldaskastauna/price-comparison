@@ -1,5 +1,7 @@
 package webscraping.coursework;
 
+import java.util.ArrayList;
+import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 
@@ -10,13 +12,17 @@ import org.springframework.context.annotation.*;
 public class Main {
     public static void main(String[] args) { 
         runThreadsAnnotations();
+       
     }
     
     /** Uses Spring Annotation configuration to set up and run application */
-    static void runThreadsAnnotations(){
-            
+    static void runThreadsAnnotations(){ 
+               
     //Instruct Spring to create and wire beans using XML file
     ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+    
+    // Get sessionFactory
+    SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");
     
     // Get LaptopsDirect bean
     LaptopsDirectScraper laptopsDirect = (LaptopsDirectScraper) context.getBean("laptopsDirectScraper");
@@ -29,7 +35,7 @@ public class Main {
     
     // Get LaptopOutlet bean
     LaptopOutletScraper laptopOutlet = (LaptopOutletScraper) context.getBean("laptopOutletScraper");
-    
+
     // Get Box bean
     BoxScraper box = (BoxScraper) context.getBean("boxScraper");
     

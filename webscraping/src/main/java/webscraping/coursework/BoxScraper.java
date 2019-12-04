@@ -11,6 +11,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 /**
  *
@@ -19,17 +24,26 @@ import org.jsoup.select.Elements;
 public class BoxScraper extends Thread{
         //Specifies the interval between HTTP requests to the server in seconds.
         private int crawlDelay = 5;
-    
+        private SessionFactory sessionFactory;
+        
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
+        
+
+        public void run() {
+        Hibernate hibernate = new Hibernate();
+        
+        hibernate.init();
+                //Creates new Sessions when we need to interact with the database 
+        
+        //Get a new Session instance from the session factory
+        Session session = sessionFactory.getCurrentSession();
         
         // Create objects to store info from website
         Product product = new Product();
         Laptop laptop = new Laptop();
         Url url = new Url();
-        
-        public void run() {
-            runThread = true;
+        runThread = true;
             System.out.println("Scraping www.box.co.uk laptops...");
             
             //Download HTML document from website
@@ -60,6 +74,7 @@ public class BoxScraper extends Thread{
                         Elements descriptionClass = prods.get(i).select(".p-list-points");
                         String description = descriptionClass.text();
                         product.setDescription(description);
+                        
                         
                         //Get the product price
                         Elements priceClass = prods.get(i).select(".p-list-sell");
@@ -95,12 +110,6 @@ public class BoxScraper extends Thread{
                         url.setDomain(domain);
                         url.setPath(productUrlA.attr("href"));
                         
-                        //Output the data that we have downloaded
-                        System.out.println("\n box.co.uk description: " + description + 
-                                           ";\n box.co.uk price: " + price + 
-                                           ";\n box.co.uk brand: " + brand +
-                                           ";\n box.co.uk image url: " + imageUrl +
-                                           ";\n box.co.uk product url: " + productUrl);
                     }
                 }
                 sleep(1000 * crawlDelay);
@@ -109,6 +118,19 @@ public class BoxScraper extends Thread{
             }   catch(InterruptedException ex){
                     System.err.println(ex.getMessage());
             }
+        //Start transaction
+        session.beginTransaction();
+
+        //Add info to database - will not be stored until we commit the transaction
+        session.save(laptop);
+        session.save(product);
+        session.save(url);
+        
+        //Commit transaction to save it to database
+        session.getTransaction().commit();
+
+        //Close the session and release database connection
+        session.close();
         }
         // Other threads can stop this thread
         public void stopThread(){

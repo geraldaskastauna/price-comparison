@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
  */
 public class AppConfig {
     SessionFactory sessionFactory;
-    
+
     @Bean
     public BoxScraper boxScraper(){
         BoxScraper box = new BoxScraper();

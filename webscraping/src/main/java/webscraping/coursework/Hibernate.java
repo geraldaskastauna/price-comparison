@@ -5,28 +5,21 @@
  */
 package webscraping.coursework;
 
-//Hibernate imports
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import java.util.List;
 /**
  *
  * @author linux
  */
-/** Simple Hibernate that uses annotation to specify the mapping between 
- *  a laptop object and the laptops table in the price_comparison database. */
 public class Hibernate {
-    //Creates new Sessions when we need to interact with the database 
+    //Creates new Sessions when we need to interact with the database
     private SessionFactory sessionFactory;
-    
-    
-    /** Empty constructor */
-    Hibernate() {
-    }
 
-    
     /** Sets up the session factory.
      *  Call this method first.  */
     public void init(){
@@ -36,7 +29,7 @@ public class Hibernate {
 
             //Load configuration from hibernate configuration file.
             //Here we are using a configuration file that specifies Java annotations.
-            standardServiceRegistryBuilder.configure("resources/hibernate.cfg.xml"); 
+            standardServiceRegistryBuilder.configure("hibernate.cfg.xml");
 
             //Create the registry that will be used to build the session factory
             StandardServiceRegistry registry = standardServiceRegistryBuilder.build();
@@ -45,16 +38,15 @@ public class Hibernate {
                 sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
             }
             catch (Exception e) {
-                    /* The registry would be destroyed by the SessionFactory, 
+                    /* The registry would be destroyed by the SessionFactory,
                         but we had trouble building the SessionFactory, so destroy it manually */
-                    System.err.println("Session Factory build failed.");
-                    e.printStackTrace();
-                    StandardServiceRegistryBuilder.destroy( registry );
+                System.err.println("Session Factory build failed.");
+                e.printStackTrace();
+                StandardServiceRegistryBuilder.destroy( registry );
             }
 
             //Ouput result
             System.out.println("Session factory built.");
-
         }
         catch (Throwable ex) {
             // Make sure you log the exception, as it might be swallowed
