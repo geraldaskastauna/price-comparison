@@ -10,8 +10,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-
-import java.util.List;
 /**
  *
  * @author linux
@@ -24,6 +22,7 @@ public class Hibernate {
      *  Call this method first.  */
     public void init(){
         try {
+            SessionFactory sessionFactory;
             //Create a builder for the standard service registry
             StandardServiceRegistryBuilder standardServiceRegistryBuilder = new StandardServiceRegistryBuilder();
 

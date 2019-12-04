@@ -26,7 +26,7 @@ public class AppConfig {
     ScraperManager scraperManager = new ScraperManager();
         
     //Create list of web scrapers and add to scraper manager
-    List<WebScraper> scraperList = new ArrayList();
+    List<Thread> scraperList = new ArrayList();
         
     scraperList.add(boxScraper());
     scraperList.add(eBuyerScraper());

@@ -1,0 +1,47 @@
+[1mdiff --git a/webscraping/src/main/java/webscraping/coursework/ScraperManager.java b/webscraping/src/main/java/webscraping/coursework/ScraperManager.java[m
+[1mindex afdaf05..ad924b7 100644[m
+[1m--- a/webscraping/src/main/java/webscraping/coursework/ScraperManager.java[m
+[1m+++ b/webscraping/src/main/java/webscraping/coursework/ScraperManager.java[m
+[36m@@ -23,4 +23,22 @@[m [mpublic class ScraperManager {[m
+     public void setScraperList(List<WebScraper> scrapingThreads){[m
+         this.scrapingThreads = scrapingThreads;[m
+     }[m
+[32m+[m[41m    [m
+[32m+[m[41m    [m
+[32m+[m[32m    public void startThreads() {[m
+[32m+[m[32m        for(int i = 0; i < 5;i++){[m
+[32m+[m[32m                scrapingThreads.get(i).start();[m
+[32m+[m[32m        }[m[41m      [m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    public void joinThreads() {[m
+[32m+[m[32m        // Join threads[m
+[32m+[m[32m    try{[m
+[32m+[m[32m        for(int i = 0; i < 5;i++){[m
+[32m+[m[32m            scrapingThreads.get(i).join();[m
+[32m+[m[32m        }[m[41m [m
+[32m+[m[32m    }   catch(InterruptedException ex){[m
+[32m+[m[32m            System.out.println("Interrupted exception thrown: " + ex.getMessage());[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+ }[m
+[1mdiff --git a/webscraping/src/main/java/webscraping/coursework/WebScraper.java b/webscraping/src/main/java/webscraping/coursework/WebScraper.java[m
+[1mindex 45c17dc..705c164 100644[m
+[1m--- a/webscraping/src/main/java/webscraping/coursework/WebScraper.java[m
+[1m+++ b/webscraping/src/main/java/webscraping/coursework/WebScraper.java[m
+[36m@@ -16,6 +16,9 @@[m [mpublic class WebScraper {[m
+     Thread thread;[m
+     [m
+     WebScraper(Thread thread){[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    public void setThread(Thread thread) {[m
+         this.thread = thread;[m
+     }[m
+ }[m
+[1mdiff --git a/webscraping/target/classes/webscraping/coursework/ScraperManager.class b/webscraping/target/classes/webscraping/coursework/ScraperManager.class[m
+[1mindex 63432d5..93bd2d8 100644[m
+Binary files a/webscraping/target/classes/webscraping/coursework/ScraperManager.class and b/webscraping/target/classes/webscraping/coursework/ScraperManager.class differ
+[1mdiff --git a/webscraping/target/classes/webscraping/coursework/WebScraper.class b/webscraping/target/classes/webscraping/coursework/WebScraper.class[m
+[1mindex f0b8b74..067c60b 100644[m
+Binary files a/webscraping/target/classes/webscraping/coursework/WebScraper.class and b/webscraping/target/classes/webscraping/coursework/WebScraper.class differ

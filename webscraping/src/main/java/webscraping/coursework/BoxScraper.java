@@ -28,16 +28,18 @@ public class BoxScraper extends Thread{
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
         
-
         public void run() {
+            
         Hibernate hibernate = new Hibernate();
         
-       // hibernate.init();        
-       
+        hibernate.init();     
+        
+        Session session = sessionFactory.getCurrentSession();
         // Create objects to store info from website
         Product product = new Product();
         Laptop laptop = new Laptop();
         Url url = new Url();
+        
         runThread = true;
             System.out.println("Scraping www.box.co.uk laptops...");
             
@@ -112,6 +114,19 @@ public class BoxScraper extends Thread{
                                            ";\n box.co.uk image url: " + imageUrl +
                                            ";\n box.co.uk product url: " + productUrl);
                     }
+        //Start transaction
+        session.beginTransaction();
+
+        //Add items to database - will not be stored until we commit the transaction
+        session.save(laptop);
+        session.save(product);
+        session.save(url);
+
+        //Commit transaction to save it to database
+        session.getTransaction().commit();
+        
+        //Close the session and release database connection
+        session.close();
                 }
                 sleep(1000 * crawlDelay);
             }   catch (IOException ex) {
@@ -120,7 +135,6 @@ public class BoxScraper extends Thread{
                     System.err.println(ex.getMessage());
             }
         }
-        
         // Other threads can stop this thread
         public void stopThread(){
             runThread = false;
