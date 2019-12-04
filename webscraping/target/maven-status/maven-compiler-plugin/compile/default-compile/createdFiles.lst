@@ -1,10 +1,10 @@
-webscraping/coursework/BoxScraper.class
 webscraping/coursework/Product.class
-webscraping/coursework/AppConfig.class
-webscraping/coursework/LaptopOutletScraper.class
 webscraping/coursework/Laptop.class
 webscraping/coursework/VeryScraper.class
 webscraping/coursework/Main.class
+webscraping/coursework/BoxScraper.class
+webscraping/coursework/AppConfig.class
+webscraping/coursework/LaptopOutletScraper.class
 webscraping/coursework/Url.class
 webscraping/coursework/LaptopsDirectScraper.class
 webscraping/coursework/EBuyerScraper.class

@@ -12,7 +12,7 @@
     <property name="productsId" type="int">
       <column name="products_id"/>
     </property>
-    <property name="price" type="float">
+    <property name="price" type="double">
       <column name="price"/>
     </property>
   </class>

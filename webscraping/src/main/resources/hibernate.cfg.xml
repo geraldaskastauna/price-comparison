@@ -1,0 +1,26 @@
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection properties - Driver, URL, user, password -->
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost/price_comparison?serverTimezone=UTC</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
+        
+        <!-- Connection Pool Size -->
+        <property name="hibernate.connection.pool_size">5</property>
+        
+        <!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
+        <property name="hibernate.current_session_context_class">thread</property>
+        
+        <!-- Outputs the SQL queries, should be disabled in Production -->
+        <property name="hibernate.show_sql">true</property>
+        
+        <!-- Different RDBMSs have variations in the SQL that they support - specify MySQL -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        
+        <!-- Mapping with annotation - specify the annotated classes here -->
+        <mapping class="webscraping.coursework.Laptop"/>
+        <mapping class="webscraping.coursework.Product"/>
+        <mapping class="webscraping.coursework.Url"/>
+    </session-factory>
+</hibernate-configuration>

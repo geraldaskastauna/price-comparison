@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="webscraping.coursework.Url" table="url">
+  <class name="webscraping.coursework.Laptop" table="laptops">
     <id name="id" type="int">
       <column name="id"/>
       <generator class="increment"/>
     </id>
-    <property name="domain" type="varchar">
-      <column name="domain"/>
+    <property name="urlId" type="int">
+      <column name="url_id"/>
     </property>
-    <property name="path" type="varchar">
-      <column name="path"/>
+    <property name="productsId" type="int">
+      <column name="products_id"/>
     </property>
-    <property name="queryString" type="varchar">
-      <column name="query_string"/>
+    <property name="price" type="double">
+      <column name="price"/>
     </property>
   </class>
 </hibernate-mapping>
