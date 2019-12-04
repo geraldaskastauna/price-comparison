@@ -24,7 +24,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 public class BoxScraper extends Thread{
         //Specifies the interval between HTTP requests to the server in seconds.
         private int crawlDelay = 5;
-        private SessionFactory sessionFactory;
         
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
@@ -33,12 +32,8 @@ public class BoxScraper extends Thread{
         public void run() {
         Hibernate hibernate = new Hibernate();
         
-        hibernate.init();
-                //Creates new Sessions when we need to interact with the database 
-        
-        //Get a new Session instance from the session factory
-        Session session = sessionFactory.getCurrentSession();
-        
+       // hibernate.init();        
+       
         // Create objects to store info from website
         Product product = new Product();
         Laptop laptop = new Laptop();
@@ -110,6 +105,12 @@ public class BoxScraper extends Thread{
                         url.setDomain(domain);
                         url.setPath(productUrlA.attr("href"));
                         
+                        //Output the data that we have downloaded
+                        System.out.println("\n box.co.uk description: " + description + 
+                                           ";\n box.co.uk price: " + price + 
+                                           ";\n box.co.uk brand: " + brand +
+                                           ";\n box.co.uk image url: " + imageUrl +
+                                           ";\n box.co.uk product url: " + productUrl);
                     }
                 }
                 sleep(1000 * crawlDelay);
@@ -118,20 +119,8 @@ public class BoxScraper extends Thread{
             }   catch(InterruptedException ex){
                     System.err.println(ex.getMessage());
             }
-        //Start transaction
-        session.beginTransaction();
-
-        //Add info to database - will not be stored until we commit the transaction
-        session.save(laptop);
-        session.save(product);
-        session.save(url);
-        
-        //Commit transaction to save it to database
-        session.getTransaction().commit();
-
-        //Close the session and release database connection
-        session.close();
         }
+        
         // Other threads can stop this thread
         public void stopThread(){
             runThread = false;

@@ -100,6 +100,12 @@ public class EBuyerScraper extends Thread{
                         url.setDomain(domain);
                         url.setPath(productUrlA.attr("href"));
                         
+                        //Output the data that we have downloaded
+                        System.out.println("\n https://www.ebuyer.com description: " + description + 
+                                           ";\n https://www.ebuyer.com price: " + price + 
+                                           ";\n https://www.ebuyer.com brand: " + brand +
+                                           ";\n https://www.ebuyer.com image url: " + imageUrl +
+                                           ";\n https://www.ebuyer.com product url: " + productUrl);
                     }
                 }
                 sleep(1000 * crawlDelay);

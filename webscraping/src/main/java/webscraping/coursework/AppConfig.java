@@ -22,17 +22,33 @@ public class AppConfig {
     SessionFactory sessionFactory;
 
     @Bean
+    public ScraperManager scraperManager(){
+    ScraperManager scraperManager = new ScraperManager();
+        
+    //Create list of web scrapers and add to scraper manager
+    List<WebScraper> scraperList = new ArrayList();
+        
+    scraperList.add(boxScraper());
+    scraperList.add(eBuyerScraper());
+    scraperList.add(laptopOutletScraper());
+    scraperList.add(laptopsDirectScraper());
+    scraperList.add(veryScraper());
+    
+    scraperManager.setScraperList(scraperList);
+    
+    return scraperManager;
+    }
+    
+    @Bean
     public BoxScraper boxScraper(){
         BoxScraper box = new BoxScraper();
-        box.start();
-
+        
         return box;
     }
     
     @Bean
     public EBuyerScraper eBuyerScraper(){
         EBuyerScraper eBuyer = new EBuyerScraper();
-        eBuyer.start();
 
         return eBuyer;
     }
@@ -40,7 +56,6 @@ public class AppConfig {
     @Bean
     public LaptopOutletScraper laptopOutletScraper(){
         LaptopOutletScraper laptopOutlet = new LaptopOutletScraper();
-        laptopOutlet.start();
 
         return laptopOutlet;
     }
@@ -48,7 +63,6 @@ public class AppConfig {
     @Bean
     public LaptopsDirectScraper laptopsDirectScraper(){
         LaptopsDirectScraper laptopsDirect = new LaptopsDirectScraper();
-        laptopsDirect.start();
 
         return laptopsDirect;
     }
@@ -56,7 +70,6 @@ public class AppConfig {
     @Bean
     public VeryScraper veryScraper(){
         VeryScraper very = new VeryScraper();
-        very.start();
 
         return very;
     }

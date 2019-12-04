@@ -97,7 +97,12 @@ public class LaptopsDirectScraper extends Thread{
                         String productUrl = domain.concat(itemUrlA.attr("href"));
                         url.setDomain(domain);
                         url.setPath(productUrl);
-
+//Output the data that we have downloaded
+                        System.out.println("\n https://www.laptopsdirect.co.uk description: " + description + 
+                                           ";\n https://www.laptopsdirect.co.uk price: " + price + 
+                                           ";\n https://www.laptopsdirect.co.uk brand: " + brand +
+                                           ";\n https://www.laptopsdirect.co.uk image url: " + imageUrl +
+                                           ";\n https://www.laptopsdirect.co.uk product url: " + productUrl);
                     }
                 }
                 sleep(1000 * crawlDelay);

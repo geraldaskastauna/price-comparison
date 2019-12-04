@@ -91,6 +91,12 @@ public class VeryScraper extends Thread {
                         String domain = "http://www.very.co.uk";
                         url.setDomain(domain);
                         url.setPath(productUrl);
+                        
+                        System.out.println("\n http://www.very.co.uk description: " + description + 
+                                           ";\n http://www.very.co.uk price: " + price + 
+                                           ";\n http://www.very.co.uk brand: " + brand +
+                                           ";\n http://www.very.co.uk image url: " + imageUrl +
+                                           ";\n http://www.very.co.uk product url: " + productUrl);
 
                     }
                 } 
