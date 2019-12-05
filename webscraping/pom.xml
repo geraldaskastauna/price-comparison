@@ -47,7 +47,7 @@
                 <dependency>
                         <groupId>org.springframework</groupId>
                         <artifactId>spring-core</artifactId>
-                        <version>5.2.1.RELEASE</version>
+                        <version>5.2.0.RELEASE</version>
                 </dependency>
                 
                 <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
@@ -61,7 +61,7 @@
                 <dependency>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-orm</artifactId>
-                    <version>5.1.6.RELEASE</version>
+                    <version>5.2.0.RELEASE</version>
                 </dependency>
 
                 <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
@@ -79,6 +79,12 @@
                         <artifactId>mysql-connector-java</artifactId>
                         <version>8.0.18</version>
                 </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.2.0</version>
+      <type>jar</type>
+    </dependency>
   </dependencies>
 
   <build>

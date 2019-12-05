@@ -13,9 +13,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 /**
  *
@@ -28,23 +25,22 @@ public class BoxScraper extends Thread{
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
         
-        public void run() {
-            
-        Hibernate hibernate = new Hibernate();
+        private static SessionFactory sessionFactory;
         
-        hibernate.init();     
-        
-        Session session = sessionFactory.getCurrentSession();
         // Create objects to store info from website
         Product product = new Product();
         Laptop laptop = new Laptop();
         Url url = new Url();
+        Hibernate hibernate = new Hibernate();
         
-        runThread = true;
+        public void run() {
+            hibernate.setSessionFactory(sessionFactory);
+            runThread = true;
             System.out.println("Scraping www.box.co.uk laptops...");
             
             //Download HTML document from website
             try{
+                
                 int startingPage = 1;
                 
                 //HTML document from website to get the amount of pages
@@ -66,7 +62,7 @@ public class BoxScraper extends Thread{
                 
                     //Work through the products
                     for(int i=0; i<prods.size(); ++i){
-            
+
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".p-list-points");
                         String description = descriptionClass.text();
@@ -113,20 +109,20 @@ public class BoxScraper extends Thread{
                                            ";\n box.co.uk brand: " + brand +
                                            ";\n box.co.uk image url: " + imageUrl +
                                            ";\n box.co.uk product url: " + productUrl);
-                    }
-        //Start transaction
-        session.beginTransaction();
-
-        //Add items to database - will not be stored until we commit the transaction
-        session.save(laptop);
-        session.save(product);
-        session.save(url);
-
-        //Commit transaction to save it to database
-        session.getTransaction().commit();
+                        Session session = sessionFactory.getCurrentSession();
+                        
+                        session.save(laptop);
+                        session.save(url);
+                        session.save(product);
+                        
+                        session.beginTransaction();
+                        //Commit transaction to save it to database
+                        session.getTransaction().commit();
         
-        //Close the session and release database connection
-        session.close();
+                        //Close the session and release database connection
+                        session.close();
+                    }
+                    
                 }
                 sleep(1000 * crawlDelay);
             }   catch (IOException ex) {
@@ -135,9 +131,13 @@ public class BoxScraper extends Thread{
                     System.err.println(ex.getMessage());
             }
         }
+        
         // Other threads can stop this thread
         public void stopThread(){
             runThread = false;
+        }
+        public void setHibernate(Hibernate hibernate){
+            this.hibernate = hibernate;
         }
 }
 

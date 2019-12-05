@@ -7,6 +7,8 @@ package webscraping.coursework;
 
 import java.io.IOException;
 import static java.lang.Thread.sleep;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -18,16 +20,20 @@ import org.jsoup.nodes.Element;
 public class VeryScraper extends Thread {
         //Specifies the interval between HTTP requests to the server in seconds.
         private int crawlDelay = 5;
-    
+        
+        private static SessionFactory sessionFactory;
+        
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
-
+        
         // Create objects to store info from website
         Product product = new Product();
         Laptop laptop = new Laptop();
         Url url = new Url();
+        Hibernate hibernate = null;
         
         public void run() {
+            hibernate.setSessionFactory(sessionFactory);
             runThread = true;
             System.out.println("Scraping www.very.co.uk laptops...");
             
@@ -97,7 +103,18 @@ public class VeryScraper extends Thread {
                                            ";\n http://www.very.co.uk brand: " + brand +
                                            ";\n http://www.very.co.uk image url: " + imageUrl +
                                            ";\n http://www.very.co.uk product url: " + productUrl);
-
+                        Session session = sessionFactory.getCurrentSession();
+                        
+                        session.save(laptop);
+                        session.save(url);
+                        session.save(product);
+                        
+                        session.beginTransaction();
+                        //Commit transaction to save it to database
+                        session.getTransaction().commit();
+        
+                        //Close the session and release database connection
+                        session.close();
                     }
                 } 
                 sleep(1000 * crawlDelay);
@@ -110,5 +127,9 @@ public class VeryScraper extends Thread {
         // Other threads can stop this thread
         public void stopThread(){
             runThread = false;
+        }
+        
+        public void setHibernate(Hibernate hibernate){
+            this.hibernate = hibernate;
         }
 }

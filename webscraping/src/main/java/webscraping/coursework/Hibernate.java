@@ -7,49 +7,60 @@ package webscraping.coursework;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-/**
- *
- * @author linux
- */
+import org.hibernate.service.ServiceRegistry;
+
 public class Hibernate {
     //Creates new Sessions when we need to interact with the database
     private SessionFactory sessionFactory;
+    
+    /** Empty constructor */
+    Hibernate() {
+    }
+   
+    public SessionFactory setSessionFactory(SessionFactory sessionFactory){
+        this.sessionFactory = sessionFactory;
+        return sessionFactory;
+    }
+    public SessionFactory getSessionFactory(){
+        return sessionFactory;
+    }
+    
+    /** Closes hibernate down and stops its thread from running */
+    public void shutDown() {
+        // Close caches and connection pools
+        getSessionFactory().close();
+    }
+ 
+    
+     /** Adds a new university to the database */
+    public void addLaptop(){
+        //Get a new Session instance from the session factory
+        Session session = sessionFactory.getCurrentSession();
 
-    /** Sets up the session factory.
-     *  Call this method first.  */
-    public void init(){
-        try {
-            SessionFactory sessionFactory;
-            //Create a builder for the standard service registry
-            StandardServiceRegistryBuilder standardServiceRegistryBuilder = new StandardServiceRegistryBuilder();
+        //Create an instance of a University class
+        Laptop laptop = new Laptop();
+        Product product = new Product();
+        Url url = new Url();
 
-            //Load configuration from hibernate configuration file.
-            //Here we are using a configuration file that specifies Java annotations.
-            standardServiceRegistryBuilder.configure("hibernate.cfg.xml");
+        //Set values of University class that we want to add
+        laptop.setPrice(12312);
+        laptop.setProductsId(5);
+        laptop.setUrlId(5);
 
-            //Create the registry that will be used to build the session factory
-            StandardServiceRegistry registry = standardServiceRegistryBuilder.build();
-            try {
-                //Create the session factory - this is the goal of the init method.
-                sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
-            }
-            catch (Exception e) {
-                    /* The registry would be destroyed by the SessionFactory,
-                        but we had trouble building the SessionFactory, so destroy it manually */
-                System.err.println("Session Factory build failed.");
-                e.printStackTrace();
-                StandardServiceRegistryBuilder.destroy( registry );
-            }
+        //Start transaction
+        session.beginTransaction();
 
-            //Ouput result
-            System.out.println("Session factory built.");
-        }
-        catch (Throwable ex) {
-            // Make sure you log the exception, as it might be swallowed
-            System.err.println("SessionFactory creation failed." + ex);
-        }
+        //Add university to database - will not be stored until we commit the transaction
+        session.save(laptop);
+
+        //Commit transaction to save it to database
+        session.getTransaction().commit();
+
+        //Close the session and release database connection
+        session.close();
+        System.out.println("University added to database with ID: " + laptop.getId());
     }
 }

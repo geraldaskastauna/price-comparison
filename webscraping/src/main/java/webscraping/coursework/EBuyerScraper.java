@@ -7,10 +7,13 @@ package webscraping.coursework;
 
 import java.io.IOException;
 import static java.lang.Thread.sleep;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 
 /**
  *
@@ -19,16 +22,20 @@ import org.jsoup.select.Elements;
 public class EBuyerScraper extends Thread{
         //Specifies the interval between HTTP requests to the server in seconds.
         private int crawlDelay = 5;
-    
+        
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
+        
+        private static SessionFactory sessionFactory;
         
         // Create objects to store info from website
         Product product = new Product();
         Laptop laptop = new Laptop();
         Url url = new Url();
+        Hibernate hibernate = new Hibernate();
         
         public void run() {
+            hibernate.setSessionFactory(sessionFactory);
             runThread = true;
             System.out.println("Scraping www.ebuyer.com laptops...");
             
@@ -106,6 +113,18 @@ public class EBuyerScraper extends Thread{
                                            ";\n https://www.ebuyer.com brand: " + brand +
                                            ";\n https://www.ebuyer.com image url: " + imageUrl +
                                            ";\n https://www.ebuyer.com product url: " + productUrl);
+                        Session session = sessionFactory.getCurrentSession();
+                        
+                        session.save(laptop);
+                        session.save(url);
+                        session.save(product);
+                        
+                        session.beginTransaction();
+                        //Commit transaction to save it to database
+                        session.getTransaction().commit();
+        
+                        //Close the session and release database connection
+                        session.close();
                     }
                 }
                 sleep(1000 * crawlDelay);
@@ -118,5 +137,7 @@ public class EBuyerScraper extends Thread{
         // Other threads can stop this thread
         public void stopThread(){
             runThread = false;
+        }
+        void setHibernate(Hibernate hibernate){
         }
 }

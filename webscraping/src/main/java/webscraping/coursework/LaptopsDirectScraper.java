@@ -6,6 +6,8 @@
 package webscraping.coursework;
 
 import java.io.IOException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,13 +23,17 @@ public class LaptopsDirectScraper extends Thread{
     
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
+         
+        private static SessionFactory sessionFactory;
         
         // Create objects to store info from website
         Product product = new Product();
         Laptop laptop = new Laptop();
         Url url = new Url();
+        Hibernate hibernate = new Hibernate();
         
         public void run() {
+            hibernate.setSessionFactory(sessionFactory);
             runThread = true;
             System.out.println("Scraping www.laptopsdirect.co.uk laptops...");
             
@@ -97,12 +103,24 @@ public class LaptopsDirectScraper extends Thread{
                         String productUrl = domain.concat(itemUrlA.attr("href"));
                         url.setDomain(domain);
                         url.setPath(productUrl);
-//Output the data that we have downloaded
+                        //Output the data that we have downloaded
                         System.out.println("\n https://www.laptopsdirect.co.uk description: " + description + 
                                            ";\n https://www.laptopsdirect.co.uk price: " + price + 
                                            ";\n https://www.laptopsdirect.co.uk brand: " + brand +
                                            ";\n https://www.laptopsdirect.co.uk image url: " + imageUrl +
                                            ";\n https://www.laptopsdirect.co.uk product url: " + productUrl);
+                        Session session = sessionFactory.getCurrentSession();
+                        
+                        session.save(laptop);
+                        session.save(url);
+                        session.save(product);
+                        
+                        session.beginTransaction();
+                        //Commit transaction to save it to database
+                        session.getTransaction().commit();
+        
+                        //Close the session and release database connection
+                        session.close();
                     }
                 }
                 sleep(1000 * crawlDelay);
@@ -115,5 +133,8 @@ public class LaptopsDirectScraper extends Thread{
         // Other threads can stop this thread
         public void stopThread(){
             runThread = false;
+        }
+        public void setHibernate(Hibernate hibernate){
+            this.hibernate = hibernate;
         }
 }
