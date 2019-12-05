@@ -22,9 +22,6 @@ public class Url {
     @Column(name = "domain")
     private String domain;
     
-    @Column(name = "path")
-    private String path;
-    
     @Column(name = "query_string")
     private String queryString;
     
@@ -41,10 +38,6 @@ public class Url {
     public String getDomain() {
         return domain;
     }
-     
-    public String getPath() {
-        return path;
-    }
     
     public String getQueryString() {
         return queryString;
@@ -58,11 +51,7 @@ public class Url {
         this.domain = domain;
     }
     
-    public void setPath(String path) {
-        this.path = path;
-    }
-    
-    public void setQueryString() {
+    public void setQueryString(String queryString) {
         this.queryString = queryString;
     }
 }

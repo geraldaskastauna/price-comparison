@@ -1,9 +1,5 @@
 package webscraping.coursework;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 
@@ -14,19 +10,10 @@ import org.springframework.context.annotation.*;
 public class Main {
     //private static SessionFactory sessionFactory;
     public static void main(String[] args) { 
-        runThreadsAnnotations();
-        /*
-        //Create a new instance of the HibernateExample class
-        HibernateAnnotationExample hibernateAnnotationExample = new HibernateAnnotationExample();
+        //runThreadsAnnotations();
+        TestingThreads test = new TestingThreads();
         
-        //Set up the SessionFactory
-        hibernateAnnotationExample.init();
-        
-        //Example operations
-        hibernateAnnotationExample.addProduct();
-        
-        //Shut down Hibernate
-        hibernateAnnotationExample.shutDown(); */
+        test.start();
         
     }
     

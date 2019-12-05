@@ -16,15 +16,14 @@ import org.hibernate.service.ServiceRegistry;
 @Transactional
 public class Hibernate {
     //Creates new Sessions when we need to interact with the database
-    private SessionFactory sessionFactory = null;
+    private SessionFactory sessionFactory;
     
     /** Empty constructor */
     Hibernate() {
     }
    
-    public SessionFactory setSessionFactory(SessionFactory sessionFactory){
-        this.sessionFactory = null;
-        return sessionFactory;
+    public void setSessionFactory(SessionFactory sessionFactory){
+        this.sessionFactory = sessionFactory;
     }
     public SessionFactory getSessionFactory(){
         return sessionFactory;

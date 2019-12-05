@@ -8,12 +8,10 @@ package webscraping.coursework;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 
 /**
  *
@@ -30,12 +28,17 @@ public class EBuyerScraper extends Thread{
         Product product = new Product();
         Laptop laptop = new Laptop();
         Url url = new Url();
+        
+        // Class that generates sessionFactory
         Hibernate hibernate = new Hibernate();
         
         public void run() {
-            Session session = hibernate.getSessionFactory().getCurrentSession();
+            // Declare a domain name
+            String domain = "https://www.ebuyer.com";
+            
+            // Start thread
             runThread = true;
-            System.out.println("Scraping www.ebuyer.com laptops...");
+            System.out.println("Scraping " + domain + " laptops...");
             
             //Download HTML document from website
             try{
@@ -55,15 +58,18 @@ public class EBuyerScraper extends Thread{
                 
                     //Work through the products
                     for(int i=0; i<prods.size(); ++i){
-
+                        // Creates new session
+                        Session session = hibernate.getSessionFactory().getCurrentSession();
+                        
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".grid-item__ksp");
                         String description = descriptionClass.text();
+                        // Store into database
                         product.setDescription(description);
                         
                         //Get the product price
                         Elements priceClass = prods.get(i).select("p.price");
-                       
+                        // If item is out of stock price will be set to 0
                         String outOfStock = "Temporarily out of stock";
                         double price;
                         if(priceClass.text().isEmpty()){
@@ -76,6 +82,7 @@ public class EBuyerScraper extends Thread{
                             String priceArrayString = priceArray[1];
                             price = Double.parseDouble(priceArrayString);
                         }
+                        // Store into database
                         laptop.setPrice(price);
                         
                         //Get laptops brand
@@ -87,7 +94,7 @@ public class EBuyerScraper extends Thread{
                         // Check for word Refurbished
                         if(brand.contains("REFURBISHED"))
                             brand = brandArray[1];
-                                
+                        // Store into database
                         product.setBrand(brand);
                         
                         //Get the image
@@ -95,15 +102,17 @@ public class EBuyerScraper extends Thread{
                         Elements imageUrlA = imageUrlDiv.get(0).select("a");
                         Element imageUrlAClass = imageUrlA.get(0).select("img").last();
                         String imageUrl = imageUrlAClass.attr("src");
+                        // Store into database
                         product.setImageUrl(imageUrl);
                         
                         //Get the items url
                         Element productUrlA = brandClass.get(0).select("a").first();
                         String productUrlHref = productUrlA.attr("href");
-                        String domain = "https://www.ebuyer.com";
                         String productUrl = domain.concat(productUrlHref);
+                        String queryString = productUrl.replace(domain, "");
+                        // Store into database
                         url.setDomain(domain);
-                        url.setPath(productUrlA.attr("href"));
+                        url.setQueryString(queryString);
                         
                         //Output the data that we have downloaded
                         System.out.println("\n https://www.ebuyer.com description: " + description + 
@@ -111,15 +120,17 @@ public class EBuyerScraper extends Thread{
                                            ";\n https://www.ebuyer.com brand: " + brand +
                                            ";\n https://www.ebuyer.com image url: " + imageUrl +
                                            ";\n https://www.ebuyer.com product url: " + productUrl);
-                                                
+                        // Start transaction
+                        session.beginTransaction();  
+                        
+                        // Add laptop, url and product to database (need to commit)
                         session.save(laptop);
                         session.save(url);
                         session.save(product);
                         
-                        session.beginTransaction();
                         //Commit transaction to save it to database
                         session.getTransaction().commit();
-        
+
                         //Close the session and release database connection
                         session.close();
                     }
@@ -135,6 +146,7 @@ public class EBuyerScraper extends Thread{
         public void stopThread(){
             runThread = false;
         }
+        // Set hibernate class to get sessionFactory
         public void setHibernate(Hibernate hibernate){
             this.hibernate = hibernate;
         }

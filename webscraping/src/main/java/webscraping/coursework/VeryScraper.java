@@ -8,11 +8,11 @@ package webscraping.coursework;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Element;
+
 /**
  *
  * @author linux
@@ -23,17 +23,22 @@ public class VeryScraper extends Thread {
         
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
-        
+
         // Create objects to store info from website
         Product product = new Product();
         Laptop laptop = new Laptop();
         Url url = new Url();
+        
+        // Class that generates sessionFactory
         Hibernate hibernate = null;
         
         public void run() {
-            Session session = hibernate.getSessionFactory().getCurrentSession();
+            // Declare a domain name
+            String domain = "http://www.very.co.uk";
+            
+            // Start thread
             runThread = true;
-            System.out.println("Scraping www.very.co.uk laptops...");
+            System.out.println("Scraping " + domain + " laptops...");
             
             //Download HTML document from website
             try{
@@ -45,6 +50,7 @@ public class VeryScraper extends Thread {
                 String pagesInArray = pagesArray[9];
                 int totalPages = Integer.parseInt(pagesInArray);
                 
+                // Loop through pages
                 for(int page = 1; page < totalPages; page++){
                     //HTML document from website to get the amount of pages
                     Document doc = Jsoup.connect("https://www.very.co.uk/electricals/laptops/e/b/4873.end?pageNumber=" + page).get();
@@ -54,9 +60,13 @@ public class VeryScraper extends Thread {
 
                     //Work through the products
                     for(int i=0; i<prods.size(); i++){
+                        // Creates new session
+                        Session session = hibernate.getSessionFactory().getCurrentSession();
+                        
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".productBrandDesc");
                         String description = descriptionClass.text();
+                        // Store into database
                         product.setDescription(description);
                         
                         //Get the product price
@@ -72,44 +82,49 @@ public class VeryScraper extends Thread {
                         
                         String[] priceArray = priceString.split("\\s+");
                         String priceArrayString = priceArray[1];
-                        
                         // Get a double value from string array;
                         double price = Double.parseDouble(priceArrayString);
+                        // Store into database
                         laptop.setPrice(price);
                         
                         //Get the brand
                         Elements brandClass = prods.get(i).select(".productBrand");
                         String brand = brandClass.text();
+                        // Store into database
                         product.setBrand(brand);
                         
                         //Get the image url
                         Elements imageUrlClass = prods.get(i).select(".productMainImage");
                         Element imageUrlImg = imageUrlClass.get(0).select("img").last();
                         String imageUrl = imageUrlImg.attr("src");
+                        // Store into database
                         product.setImageUrl(imageUrl);
                         
                         //Get the product url
                         Elements productUrlClass = prods.get(i).select(".productMainImage");
                         Element productUrlA = productUrlClass.get(0).select("a").first();
                         String productUrl = productUrlA.attr("href");
-                        String domain = "http://www.very.co.uk";
+                        String queryString = productUrl.replace(domain, "");
+                        // Store into database
                         url.setDomain(domain);
-                        url.setPath(productUrl);
+                        url.setQueryString(queryString);
                         
                         System.out.println("\n http://www.very.co.uk description: " + description + 
                                            ";\n http://www.very.co.uk price: " + price + 
                                            ";\n http://www.very.co.uk brand: " + brand +
                                            ";\n http://www.very.co.uk image url: " + imageUrl +
                                            ";\n http://www.very.co.uk product url: " + productUrl);
+                        // Start transaction
+                        session.beginTransaction();
                         
+                        // Add laptop, url and product to database (need to commit)
                         session.save(laptop);
                         session.save(url);
                         session.save(product);
                         
-                        session.beginTransaction();
                         //Commit transaction to save it to database
                         session.getTransaction().commit();
-        
+                        
                         //Close the session and release database connection
                         session.close();
                     }
@@ -125,7 +140,7 @@ public class VeryScraper extends Thread {
         public void stopThread(){
             runThread = false;
         }
-        
+        // Set hibernate class to get sessionFactory
         public void setHibernate(Hibernate hibernate){
             this.hibernate = hibernate;
         }

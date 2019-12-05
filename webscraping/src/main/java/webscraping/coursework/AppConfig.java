@@ -77,7 +77,7 @@ public class AppConfig {
     @Bean
     public Hibernate hibernate(){
         Hibernate hibernate = new Hibernate();
-        hibernate.setSessionFactory(sessionFactory);
+        hibernate.setSessionFactory(sessionFactory());
         return hibernate;
     }
     

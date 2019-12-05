@@ -8,7 +8,6 @@ package webscraping.coursework;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -29,13 +28,17 @@ public class LaptopOutletScraper extends Thread{
         Product product = new Product();
         Laptop laptop = new Laptop();
         Url url = new Url();
+        
+        // Class that generates sessionFactory
         Hibernate hibernate = new Hibernate();
         
         public void run() {
-            Session session = hibernate.getSessionFactory().getCurrentSession();
-
+            // Declare a domain name
+            String domain = "https://www.laptopoutlet.co.uk/";
+            
+            // Start thread
             runThread = true;
-            System.out.println("Scraping www.laptopoutlet.co.uk laptops...");
+            System.out.println("Scraping " + domain + " laptops...");
             
             try{
                 // Scrape through 30 pages
@@ -49,10 +52,13 @@ public class LaptopOutletScraper extends Thread{
                     
                     //Work through the products
                     for(int i=0; i<prods.size(); ++i){
+                        // Creates a new session
+                        Session session = hibernate.getSessionFactory().getCurrentSession();
                         
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".product-name");
                         String description = descriptionClass.text();
+                        // Store into database
                         product.setDescription(description);
                     
                         //Get the product price
@@ -62,6 +68,7 @@ public class LaptopOutletScraper extends Thread{
                         String[] priceArray = priceString.split("\\s+");
                         String priceArrayString = priceArray[0];
                         double price = Double.parseDouble(priceArrayString);
+                        // Store into database
                         laptop.setPrice(price);
                         
                         //Get the brand
@@ -69,6 +76,9 @@ public class LaptopOutletScraper extends Thread{
                         String brand = brandA.text();
                         String[] brandArray = brand.split("\\s+");
                         brand = brandArray[0];
+                        if(brand == "Best")
+                            brand = brandArray[1];
+                        // Store into database
                         product.setBrand(brand);
                         
                         //Get image url
@@ -76,14 +86,16 @@ public class LaptopOutletScraper extends Thread{
                         Elements imageUrlA = imageUrlClass.get(0).select("a");
                         Element imageUrlAClass = imageUrlA.get(0).select("img").last();
                         String imageUrl = imageUrlAClass.attr("src");
+                        // Store into database
                         product.setImageUrl(imageUrl);
                         
                         //Get product url
                         Element productUrlHref = imageUrlA.get(0).select("a").first();
                         String productUrl = productUrlHref.attr("href");
-                        String domain = "https://www.laptopoutlet.co.uk/";
+                        String queryString = productUrl.replace(domain, "");
+                        // Store into database
                         url.setDomain(domain);
-                        url.setPath(productUrl.replace("https://www.laptopoutlet.co.uk/", ""));
+                        url.setQueryString(queryString);
                         
                         //Output the data that we have downloaded
                         System.out.println("\n https://www.laptopoutlet.co.uk/ description: " + description + 
@@ -91,18 +103,19 @@ public class LaptopOutletScraper extends Thread{
                                            ";\n https://www.laptopoutlet.co.uk/ brand: " + brand +
                                            ";\n https://www.laptopoutlet.co.uk/ image url: " + imageUrl +
                                            ";\n https://www.laptopoutlet.co.uk/ product url: " + productUrl);
+                        // Start transaction
+                        session.beginTransaction();
                         
+                        // Add laptop, url and product to database (need to commit)
                         session.save(laptop);
                         session.save(url);
                         session.save(product);
                         
-                        session.beginTransaction();
                         //Commit transaction to save it to database
                         session.getTransaction().commit();
-        
+                        
                         //Close the session and release database connection
                         session.close();
-
                     }
                 }
                 sleep(1000 * crawlDelay);
@@ -116,6 +129,7 @@ public class LaptopOutletScraper extends Thread{
         public void stopThread(){
             runThread = false;
         }
+        // Set hibernate class to get sessionFactory
         public void setHibernate(Hibernate hibernate){
             this.hibernate = hibernate;
         }

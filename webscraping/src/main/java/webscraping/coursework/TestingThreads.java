@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package webscraping.coursework;
-
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import org.jsoup.Jsoup;
@@ -17,20 +16,12 @@ import org.hibernate.Session;
  *
  * @author linux
  */
-public class BoxScraper extends Thread{
+public class TestingThreads extends Thread{
         //Specifies the interval between HTTP requests to the server in seconds.
         private final int crawlDelay = 5;
         
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
-        
-        // Create objects to store info from website
-        Product product = new Product();
-        Laptop laptop = new Laptop();
-        Url url = new Url();
-        
-        // Class that generates sessionFactory
-        Hibernate hibernate = new Hibernate();
         
         @Override
         public void run() {
@@ -58,6 +49,7 @@ public class BoxScraper extends Thread{
                 
                 // Scrape through all pages
                 for(int pages = 1; pages < totalPages; pages++){
+                    System.out.println("PAGE: " + pages);
                     //HTML document from website
                     Document doc = Jsoup.connect("https://www.box.co.uk/laptops/page/" + pages).get();
                     
@@ -66,13 +58,10 @@ public class BoxScraper extends Thread{
                 
                     //Work through the products
                     for(int i=0; i<prods.size(); ++i){
-                        // Creates new session
-                        Session session = hibernate.getSessionFactory().getCurrentSession();
+                        System.out.println("PRODUCT: " + i);
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".p-list-points");
                         String description = descriptionClass.text();
-                        // Store into database
-                        product.setDescription(description);
                         
                         //Get the product price
                         Elements priceClass = prods.get(i).select(".p-list-sell");
@@ -80,8 +69,6 @@ public class BoxScraper extends Thread{
                         String[] priceArray = priceString.split("\\s+");
                         String priceArrayString = priceArray[0];
                         double price = Double.parseDouble(priceArrayString);
-                        // Store into database
-                        laptop.setPrice(price);
                         
                         //Get laptops brand
                         Elements brandClass = prods.get(i).select("div.p-list-section.p-list-section-middle");
@@ -97,8 +84,6 @@ public class BoxScraper extends Thread{
                         Elements imageUrlA = imageUrlTable.get(0).select("a");
                         Element imageUrlAClass = imageUrlTable.get(0).select(".lazyImage").last();
                         String imageUrl = domain.concat(imageUrlAClass.attr("data-src"));
-                        // Store into database
-                        product.setImageUrl(imageUrl);
                         
                         //Get the items url
                         Elements productUrlTable = imageUrlClass.get(0).select("table.p-list-image");
@@ -108,29 +93,12 @@ public class BoxScraper extends Thread{
                         Element productUrlA = productUrlTd.get(0).select("a").first();
                         String productUrl = productUrlA.attr("href");
                         String queryString = productUrl.replace(domain, "");
-                        // Store into database
-                        url.setDomain(domain);
-                        url.setQueryString(queryString);
-                        
                         //Output the data that we have downloaded
                         System.out.println("\n box.co.uk description: " + description + 
                                            ";\n box.co.uk price: " + price + 
                                            ";\n box.co.uk brand: " + brand +
                                            ";\n box.co.uk image url: " + imageUrl +
                                            ";\n box.co.uk product url: " + productUrl);
-                        // Start transaction
-                        session.beginTransaction();
-                        
-                        // Add laptop, url and product to database (need to commit)
-                        session.save(laptop);
-                        session.save(url);
-                        session.save(product);
-                        
-                        //Commit transaction to save it to database
-                        session.getTransaction().commit();
-                        
-                        //Close the session and release database connection
-                        session.close();
                     }
                 }
                 sleep(1000 * crawlDelay);
@@ -144,9 +112,4 @@ public class BoxScraper extends Thread{
         public void stopThread(){
             runThread = false;
         }
-        // Set hibernate class to get sessionFactory
-        public void setHibernate(Hibernate hibernate){
-            this.hibernate = hibernate;
-        }
 }
-
