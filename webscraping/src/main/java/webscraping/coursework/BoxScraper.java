@@ -25,8 +25,6 @@ public class BoxScraper extends Thread{
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
         
-        private static SessionFactory sessionFactory;
-        
         // Create objects to store info from website
         Product product = new Product();
         Laptop laptop = new Laptop();
@@ -34,7 +32,7 @@ public class BoxScraper extends Thread{
         Hibernate hibernate = new Hibernate();
         
         public void run() {
-            hibernate.setSessionFactory(sessionFactory);
+            Session session = hibernate.getSessionFactory().getCurrentSession();
             runThread = true;
             System.out.println("Scraping www.box.co.uk laptops...");
             
@@ -109,7 +107,6 @@ public class BoxScraper extends Thread{
                                            ";\n box.co.uk brand: " + brand +
                                            ";\n box.co.uk image url: " + imageUrl +
                                            ";\n box.co.uk product url: " + productUrl);
-                        Session session = sessionFactory.getCurrentSession();
                         
                         session.save(laptop);
                         session.save(url);

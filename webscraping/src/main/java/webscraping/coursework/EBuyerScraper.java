@@ -26,8 +26,6 @@ public class EBuyerScraper extends Thread{
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
         
-        private static SessionFactory sessionFactory;
-        
         // Create objects to store info from website
         Product product = new Product();
         Laptop laptop = new Laptop();
@@ -35,7 +33,7 @@ public class EBuyerScraper extends Thread{
         Hibernate hibernate = new Hibernate();
         
         public void run() {
-            hibernate.setSessionFactory(sessionFactory);
+            Session session = hibernate.getSessionFactory().getCurrentSession();
             runThread = true;
             System.out.println("Scraping www.ebuyer.com laptops...");
             
@@ -113,8 +111,7 @@ public class EBuyerScraper extends Thread{
                                            ";\n https://www.ebuyer.com brand: " + brand +
                                            ";\n https://www.ebuyer.com image url: " + imageUrl +
                                            ";\n https://www.ebuyer.com product url: " + productUrl);
-                        Session session = sessionFactory.getCurrentSession();
-                        
+                                                
                         session.save(laptop);
                         session.save(url);
                         session.save(product);
@@ -138,6 +135,7 @@ public class EBuyerScraper extends Thread{
         public void stopThread(){
             runThread = false;
         }
-        void setHibernate(Hibernate hibernate){
+        public void setHibernate(Hibernate hibernate){
+            this.hibernate = hibernate;
         }
 }

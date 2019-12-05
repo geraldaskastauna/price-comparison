@@ -5,6 +5,7 @@
  */
 package webscraping.coursework;
 
+import javax.transaction.Transactional;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -12,16 +13,17 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.service.ServiceRegistry;
 
+@Transactional
 public class Hibernate {
     //Creates new Sessions when we need to interact with the database
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = null;
     
     /** Empty constructor */
     Hibernate() {
     }
    
     public SessionFactory setSessionFactory(SessionFactory sessionFactory){
-        this.sessionFactory = sessionFactory;
+        this.sessionFactory = null;
         return sessionFactory;
     }
     public SessionFactory getSessionFactory(){
