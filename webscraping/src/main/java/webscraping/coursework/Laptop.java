@@ -5,6 +5,7 @@
  */
 package webscraping.coursework;
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 /**
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "laptops")
 /** Holds details about laptop */
-public class Laptop {
+public class Laptop implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

@@ -10,11 +10,7 @@ import org.springframework.context.annotation.*;
 public class Main {
     //private static SessionFactory sessionFactory;
     public static void main(String[] args) { 
-        //runThreadsAnnotations();
-        TestingThreads test = new TestingThreads();
-        
-        test.start();
-        
+        runThreadsAnnotations();
     }
     
     /** Uses Spring Annotation configuration to set up and run application */

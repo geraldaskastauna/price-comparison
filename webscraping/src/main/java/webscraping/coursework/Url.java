@@ -5,6 +5,7 @@
  */
 package webscraping.coursework;
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 /**
@@ -13,10 +14,12 @@ import javax.persistence.*;
  */
 @Entity
 @Table (name = "url")
-public class Url {
+public class Url implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    //@ManyToOne
+    //@JoinColumn(name="url_id", nullable=false)
     private int id;
     
     @Column(name = "domain")

@@ -76,10 +76,10 @@ public class LaptopOutletScraper extends Thread{
                         String brand = brandA.text();
                         String[] brandArray = brand.split("\\s+");
                         brand = brandArray[0];
-                        if(brand == "Best")
+                        if(brand.equals("Best"))
                             brand = brandArray[1];
                         // Store into database
-                        product.setBrand(brand);
+                        product.setBrand(brand.toLowerCase());
                         
                         //Get image url
                         Elements imageUrlClass = prods.get(i).select(".product-image-wrap");

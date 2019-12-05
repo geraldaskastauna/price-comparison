@@ -91,7 +91,7 @@ public class VeryScraper extends Thread {
                         Elements brandClass = prods.get(i).select(".productBrand");
                         String brand = brandClass.text();
                         // Store into database
-                        product.setBrand(brand);
+                        product.setBrand(brand.toLowerCase());
                         
                         //Get the image url
                         Elements imageUrlClass = prods.get(i).select(".productMainImage");

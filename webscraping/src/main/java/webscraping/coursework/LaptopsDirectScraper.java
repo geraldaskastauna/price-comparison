@@ -60,8 +60,6 @@ public class LaptopsDirectScraper extends Thread{
                 
                 // Loop through all pages
                 for(int page = 1; page <= totalPages; page++){
-                    // Creates new session
-                    Session session = hibernate.getSessionFactory().getCurrentSession();
                     
                     //Download HTML document from website
                     Document doc = Jsoup.connect("https://www.laptopsdirect.co.uk/ct/laptops-and-netbooks/laptops?pageNumber=" + page).get();  
@@ -71,6 +69,9 @@ public class LaptopsDirectScraper extends Thread{
   
                     //Work through the products
                     for(int i=0; i<prods.size(); ++i){
+                        // Creates new session
+                        Session session = hibernate.getSessionFactory().getCurrentSession();
+                        
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".productInfo");
                         String description = descriptionClass.text();
@@ -95,7 +96,7 @@ public class LaptopsDirectScraper extends Thread{
                         if(brand.contains("Refurbished"))
                             brand = brandArray[1];
                         // Store into database
-                        product.setBrand(brand);
+                        product.setBrand(brand.toLowerCase());
                         
                         //Get the image
                         Elements imageUrlClass = prods.get(i).select(".sr_image");

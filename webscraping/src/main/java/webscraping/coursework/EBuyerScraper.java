@@ -95,7 +95,7 @@ public class EBuyerScraper extends Thread{
                         if(brand.contains("REFURBISHED"))
                             brand = brandArray[1];
                         // Store into database
-                        product.setBrand(brand);
+                        product.setBrand(brand.toLowerCase());
                         
                         //Get the image
                         Elements imageUrlDiv = prods.get(i).select("div.grid-item__img");

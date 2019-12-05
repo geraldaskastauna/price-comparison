@@ -68,6 +68,7 @@ public class BoxScraper extends Thread{
                     for(int i=0; i<prods.size(); ++i){
                         // Creates new session
                         Session session = hibernate.getSessionFactory().getCurrentSession();
+                        
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".p-list-points");
                         String description = descriptionClass.text();
@@ -89,6 +90,7 @@ public class BoxScraper extends Thread{
                         String brandA = brandH.text();
                         String[] brandArray = brandA.split("\\s+");
                         String brand = brandArray[0];
+                        product.setBrand(brand.toLowerCase());
                         
                         //Get the image
                         Elements imageUrlDiv = prods.get(i).select("div.p-list");

@@ -1,11 +1,13 @@
 package webscraping.coursework;
 
+import java.io.Serializable;
 import javax.persistence.*;
+
 
 @Entity
 @Table(name = "products")
 /** Holds details about product */
-public class Product {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -23,7 +25,7 @@ public class Product {
     @Column(name = "image_url")
     // Laptops image url
     private String imageUrl;
-    
+ 
     /** Empty constructor */
     public Product(){
 

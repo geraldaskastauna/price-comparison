@@ -18,15 +18,15 @@ import org.hibernate.Session;
  */
 public class TestingThreads extends Thread{
         //Specifies the interval between HTTP requests to the server in seconds.
-        private final int crawlDelay = 5;
-        
+        private int crawlDelay = 5;
+    
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
+       
         
-        @Override
         public void run() {
             // Declare a domain name
-            String domain = "https://www.box.co.uk";
+            String domain = "https://www.laptopsdirect.co.uk";
             
             // Start thread
             runThread = true;
@@ -34,71 +34,78 @@ public class TestingThreads extends Thread{
             
             //Download HTML document from website
             try{
-                // Starting page
-                int startingPage = 1;
+                Document docForPages = Jsoup.connect("https://www.laptopsdirect.co.uk/ct/laptops-and-netbooks/laptops?pageNumber=1").get();
                 
-                //HTML document from website to get the amount of pages
-                Document docForPages = Jsoup.connect("https://www.box.co.uk/laptops/page/" + startingPage).get();
+                //Get total amount of productcs
+                Element products = docForPages.select(".sr_numresults > b").last();
+                int productsAmount = Integer.parseInt(products.text());
                 
-                //Get total amount of pages
-                Elements pagesClass = docForPages.select("div.pagination-top");
-                Elements pagesSecondClass = pagesClass.select("div.pq-pagination");
-                Elements pagesFinalClass = pagesSecondClass.select("div.pq-pagination-numbers");
-                Elements pagesP = pagesFinalClass.select("p");
-                int totalPages = Integer.parseInt(pagesP.text().substring(0, 2));
+                //Find total amount of pages (20 products per page)
+                int totalPages;
+                int productsPerPage = 24;
                 
-                // Scrape through all pages
-                for(int pages = 1; pages < totalPages; pages++){
-                    System.out.println("PAGE: " + pages);
-                    //HTML document from website
-                    Document doc = Jsoup.connect("https://www.box.co.uk/laptops/page/" + pages).get();
-                    
+                //If there is a reminder after dividing productsAmount by 24 add 1(page)
+                if(productsAmount%24 == 0){
+                    totalPages = (productsAmount / productsPerPage);
+                } else {
+                    totalPages = (productsAmount / productsPerPage) + 1;
+                }
+                
+                // Loop through all pages
+                for(int page = 1; page <= totalPages; page++){
+                    System.out.println("PAGE: " + page);
+                    //Download HTML document from website
+                    Document doc = Jsoup.connect("https://www.laptopsdirect.co.uk/ct/laptops-and-netbooks/laptops?pageNumber=" + page).get();  
+            
                     //Get all of the products on the page
-                    Elements prods = doc.select("div.product-list-item");
-                
+                    Elements prods = doc.select(".OfferBox");
+  
                     //Work through the products
                     for(int i=0; i<prods.size(); ++i){
+                        // Creates new session
                         System.out.println("PRODUCT: " + i);
                         //Get the product description
-                        Elements descriptionClass = prods.get(i).select(".p-list-points");
+                        Elements descriptionClass = prods.get(i).select(".productInfo");
                         String description = descriptionClass.text();
+                        // Store into database
                         
                         //Get the product price
-                        Elements priceClass = prods.get(i).select(".p-list-sell");
+                        Elements priceClass = prods.get(i).select(".offerprice");
                         String priceString = priceClass.text().substring(1).replace(",","");
                         String[] priceArray = priceString.split("\\s+");
                         String priceArrayString = priceArray[0];
                         double price = Double.parseDouble(priceArrayString);
+                        // Store into database
                         
-                        //Get laptops brand
-                        Elements brandClass = prods.get(i).select("div.p-list-section.p-list-section-middle");
-                        Elements brandH = brandClass.get(0).select("h3");
-                        String brandA = brandH.text();
+                        //Get the brand
+                        Elements brandClass = prods.get(i).select("a.offerboxtitle");
+                        String brandA = brandClass.text();
                         String[] brandArray = brandA.split("\\s+");
                         String brand = brandArray[0];
+                        // Check for word Refurbished
+                        if(brand.contains("Refurbished"))
+                            brand = brandArray[1];
+                        // Store into database
                         
                         //Get the image
-                        Elements imageUrlDiv = prods.get(i).select("div.p-list");
-                        Elements imageUrlClass = imageUrlDiv.get(0).select("div.p-list-section.p-list-section-left");
-                        Elements imageUrlTable = imageUrlClass.get(0).select("table.p-list-image");
-                        Elements imageUrlA = imageUrlTable.get(0).select("a");
-                        Element imageUrlAClass = imageUrlTable.get(0).select(".lazyImage").last();
-                        String imageUrl = domain.concat(imageUrlAClass.attr("data-src"));
+                        Elements imageUrlClass = prods.get(i).select(".sr_image");
+                        Elements imageUrlA = imageUrlClass.get(0).select(".offerImage");
+                        Element imageUrlImg = imageUrlA.get(0).select("img").last();
+                        String imageUrl = "https://www.laptopsdirect.co.uk" + imageUrlImg.attr("src");
+
                         
                         //Get the items url
-                        Elements productUrlTable = imageUrlClass.get(0).select("table.p-list-image");
-                        Elements productUrlTbody = productUrlTable.get(0).select("tbody");
-                        Elements productUrlTr = productUrlTbody.get(0).select("tr");
-                        Elements productUrlTd = productUrlTr.get(0).select("td");
-                        Element productUrlA = productUrlTd.get(0).select("a").first();
-                        String productUrl = productUrlA.attr("href");
-                        String queryString = productUrl.replace(domain, "");
+                        Element itemUrlA = imageUrlClass.get(0).select("a").last();
+                        String productUrl = domain.concat(itemUrlA.attr("href"));
+                        String queryString = itemUrlA.attr("href");
+                        // Store into database
+                        
                         //Output the data that we have downloaded
-                        System.out.println("\n box.co.uk description: " + description + 
-                                           ";\n box.co.uk price: " + price + 
-                                           ";\n box.co.uk brand: " + brand +
-                                           ";\n box.co.uk image url: " + imageUrl +
-                                           ";\n box.co.uk product url: " + productUrl);
+                        System.out.println("\n https://www.laptopsdirect.co.uk description: " + description + 
+                                           ";\n https://www.laptopsdirect.co.uk price: " + price + 
+                                           ";\n https://www.laptopsdirect.co.uk brand: " + brand +
+                                           ";\n https://www.laptopsdirect.co.uk image url: " + imageUrl +
+                                           ";\n https://www.laptopsdirect.co.uk product url: " + productUrl);
                     }
                 }
                 sleep(1000 * crawlDelay);
