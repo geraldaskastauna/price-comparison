@@ -6,13 +6,14 @@
 package webscraping.coursework;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.*;
 
 /**
  *
  * @author linux
  */
-@Entity
+@Entity(name="Url")
 @Table (name = "url")
 public class Url implements Serializable {
     @Id

@@ -1,11 +1,13 @@
 package webscraping.coursework;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 
-@Entity
-@Table(name = "products")
+@Entity(name="Product")
+@Table(name = "product")
 /** Holds details about product */
 public class Product implements Serializable {
     @Id
@@ -24,8 +26,8 @@ public class Product implements Serializable {
     
     @Column(name = "image_url")
     // Laptops image url
-    private String imageUrl;
- 
+    private String imageUrl; 
+    
     /** Empty constructor */
     public Product(){
 
