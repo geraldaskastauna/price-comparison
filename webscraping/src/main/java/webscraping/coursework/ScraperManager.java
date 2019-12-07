@@ -5,9 +5,7 @@
  */
 package webscraping.coursework;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  *
@@ -39,14 +37,5 @@ public class ScraperManager {
     }   catch(InterruptedException ex){
             System.out.println("Interrupted exception thrown: " + ex.getMessage());
         }
-    }
-    
-    public void stopThread() {
-       Scanner scanner = new Scanner(System.in);
-       String input = scanner.nextLine();
-       while(!input.equals("stop")){
-           input = scanner.nextLine();
-       }
-       
     }
 }

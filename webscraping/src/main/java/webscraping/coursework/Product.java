@@ -1,6 +1,7 @@
 package webscraping.coursework;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import org.hibernate.annotations.Cascade;
@@ -27,6 +28,10 @@ public class Product implements Serializable {
     @Column(name = "image_url")
     // Laptops image url
     private String imageUrl; 
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Laptop laptop;
     
     /** Empty constructor */
     public Product(){

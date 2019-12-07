@@ -6,6 +6,7 @@
 package webscraping.coursework;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -28,6 +29,10 @@ public class Url implements Serializable {
     
     @Column(name = "query_string")
     private String queryString;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "url_id")
+    private Laptop laptop;
     
     /** Empty url constructor */
     public Url() {

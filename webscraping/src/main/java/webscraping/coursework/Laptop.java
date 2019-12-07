@@ -6,6 +6,10 @@
 package webscraping.coursework;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -23,16 +27,16 @@ public class Laptop implements Serializable {
     // Laptop id
     private int id;
     
-    @Column(name="url_id")
-    private Url url;
-    
-    @Column(name="product_id")
-    private Product product;
-    
     @Column(name = "price")
     // Laptops price
     private double price;
-           
+
+    @OneToMany(mappedBy = "id")
+    private List<Product> product = new ArrayList<Product>();
+    
+    @OneToMany(mappedBy = "id")
+    private List<Url> url = new ArrayList<Url>();
+    
     /** Empty laptop constructor */
     public Laptop() {
         
