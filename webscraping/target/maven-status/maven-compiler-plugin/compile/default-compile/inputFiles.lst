@@ -1,6 +1,7 @@
 /home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/src/main/java/webscraping/coursework/Main.java
 /home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/src/main/java/webscraping/coursework/Url.java
 /home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/src/main/java/webscraping/coursework/LaptopsDirectScraper.java
+/home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/src/main/java/webscraping/coursework/Hibernate.java
 /home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/src/main/java/webscraping/coursework/VeryScraper.java
 /home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/src/main/java/webscraping/coursework/Laptop.java
 /home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/src/main/java/webscraping/coursework/EBuyerScraper.java
@@ -9,4 +10,3 @@
 /home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/src/main/java/webscraping/coursework/AppConfig.java
 /home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/src/main/java/webscraping/coursework/ScraperManager.java
 /home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/src/main/java/webscraping/coursework/LaptopOutletScraper.java
-/home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/src/main/java/webscraping/coursework/WebScraper.java

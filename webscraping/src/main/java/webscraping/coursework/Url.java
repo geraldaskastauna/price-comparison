@@ -6,7 +6,6 @@
 package webscraping.coursework;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -14,14 +13,12 @@ import javax.persistence.*;
  *
  * @author linux
  */
-@Entity(name="Url")
+@Entity
 @Table (name = "url")
 public class Url implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    //@ManyToOne
-    //@JoinColumn(name="url_id", nullable=false)
     private int id;
     
     @Column(name = "domain")
@@ -29,9 +26,8 @@ public class Url implements Serializable {
     
     @Column(name = "query_string")
     private String queryString;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "url_id")
+    
+    @OneToOne(mappedBy = "url")
     private Laptop laptop;
     
     /** Empty url constructor */

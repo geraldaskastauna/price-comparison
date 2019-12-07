@@ -12,12 +12,14 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
- *
- * @author linux
+ * AppConfig class that holds SPRING beans.
  */
+@Configuration
 public class AppConfig {
+    // Create sessionFactory with null value
     SessionFactory sessionFactory;
 
     @Bean

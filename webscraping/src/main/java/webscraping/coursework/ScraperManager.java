@@ -18,6 +18,10 @@ public class ScraperManager {
     ScraperManager() {
     }
     
+    public List<Thread> getScraperList(){
+        return scrapingThreads;
+    }
+    
     public void setScraperList(List<Thread> scrapingThreads){
         this.scrapingThreads = scrapingThreads;
     }

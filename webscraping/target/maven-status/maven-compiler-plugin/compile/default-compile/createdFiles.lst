@@ -5,9 +5,8 @@ webscraping/coursework/Main.class
 webscraping/coursework/ScraperManager.class
 webscraping/coursework/BoxScraper.class
 webscraping/coursework/AppConfig.class
-webscraping/coursework/WebScraper.class
 webscraping/coursework/LaptopOutletScraper.class
 webscraping/coursework/Url.class
 webscraping/coursework/LaptopsDirectScraper.class
 webscraping/coursework/EBuyerScraper.class
-.netbeans_automatic_build
+webscraping/coursework/Hibernate.class

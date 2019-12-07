@@ -6,9 +6,6 @@
 package webscraping.coursework;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -17,7 +14,7 @@ import javax.persistence.*;
  * @author linux
  */
 
-@Entity(name="Laptop")
+@Entity
 @Table(name = "laptop")
 /** Holds details about laptop */
 public class Laptop implements Serializable {
@@ -30,12 +27,14 @@ public class Laptop implements Serializable {
     @Column(name = "price")
     // Laptops price
     private double price;
-
-    @OneToMany(mappedBy = "id")
-    private List<Product> product = new ArrayList<Product>();
     
-    @OneToMany(mappedBy = "id")
-    private List<Url> url = new ArrayList<Url>();
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "url_id", referencedColumnName = "id")
+    private Url url;
     
     /** Empty laptop constructor */
     public Laptop() {
