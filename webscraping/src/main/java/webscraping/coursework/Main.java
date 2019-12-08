@@ -24,6 +24,5 @@ public class Main {
     
     // Start and join scrapers
     scraperManager.startThreads();
-    scraperManager.joinThreads();
     }
 }

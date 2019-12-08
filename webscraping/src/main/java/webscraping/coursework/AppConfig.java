@@ -43,41 +43,41 @@ public class AppConfig {
     @Bean
     public BoxScraper boxScraper(){
         BoxScraper box = new BoxScraper();
-        box.setHibernate(hibernate());
+        box.setLaptopDao(laptopDao());
         return box;
     }
     
     @Bean
     public EBuyerScraper eBuyerScraper(){
         EBuyerScraper eBuyer = new EBuyerScraper();
-        eBuyer.setHibernate(hibernate());
+        eBuyer.setLaptopDao(laptopDao());
         return eBuyer;
     }
     
     @Bean
     public LaptopOutletScraper laptopOutletScraper(){
         LaptopOutletScraper laptopOutlet = new LaptopOutletScraper();
-        laptopOutlet.setHibernate(hibernate());
+        laptopOutlet.setLaptopDao(laptopDao());
         return laptopOutlet;
     }
     
     @Bean
     public LaptopsDirectScraper laptopsDirectScraper(){
         LaptopsDirectScraper laptopsDirect = new LaptopsDirectScraper();
-        laptopsDirect.setHibernate(hibernate());
+        laptopsDirect.setLaptopDao(laptopDao());
         return laptopsDirect;
     }
     
     @Bean
     public VeryScraper veryScraper(){
         VeryScraper very = new VeryScraper();
-        very.setHibernate(hibernate());
+        very.setLaptopDao(laptopDao());
         return very;
     }
     
     @Bean
-    public Hibernate hibernate(){
-        Hibernate hibernate = new Hibernate();
+    public LaptopDao laptopDao(){
+        LaptopDao hibernate = new LaptopDao();
         hibernate.setSessionFactory(sessionFactory());
         return hibernate;
     }

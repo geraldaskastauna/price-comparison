@@ -5,16 +5,22 @@
  */
 package webscraping.coursework;
 
-import javax.transaction.Transactional;
+import java.util.List;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
-@Transactional
-public class Hibernate {
+/**
+ *
+ * @author linux
+ */
+public class LaptopDao {
     //Creates new Sessions when we need to interact with the database
     private SessionFactory sessionFactory;
     
     /** Empty constructor */
-    Hibernate() {
+    LaptopDao() {
+        
     }
    
     public void setSessionFactory(SessionFactory sessionFactory){
@@ -28,5 +34,22 @@ public class Hibernate {
     public void shutDown() {
         // Close caches and connection pools
         getSessionFactory().close();
+    }
+    
+    public Boolean duplicateExist(Session session, String description, String imageUrl) {
+    
+    //Find matching products in the database
+    List<Product> productList = session.createQuery(
+        "from Product where description='" + description + 
+        "' and image_url='" + imageUrl + "'").getResultList();
+    
+    //If there is one or more products, the duplicate exists and there is no need to create a new product
+    if (productList.size() >= 1) {
+        return true;
+        
+        //Else we return false - no duplicates    
+    } else {
+        return false;
+        }
     }
 }

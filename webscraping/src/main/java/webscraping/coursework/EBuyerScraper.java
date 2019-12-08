@@ -30,7 +30,7 @@ public class EBuyerScraper extends Thread{
         Url url = new Url();
         
         // Class that generates sessionFactory
-        Hibernate hibernate = new Hibernate();
+        LaptopDao laptopDao = new LaptopDao();
         
         public void run() {
             // Declare a domain name
@@ -59,7 +59,7 @@ public class EBuyerScraper extends Thread{
                     //Work through the products
                     for(int i=0; i<prods.size(); ++i){
                         // Creates new session
-                        Session session = hibernate.getSessionFactory().getCurrentSession();
+                        Session session = laptopDao.getSessionFactory().getCurrentSession();
                         
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".grid-item__ksp");
@@ -137,7 +137,7 @@ public class EBuyerScraper extends Thread{
                 }
                 sleep(1000 * crawlDelay);
             }   catch (IOException ex) {
-                    System.out.println("Error while accessing the website");
+                    System.out.println("Error while accessing the EBUYER.COM website");
             }   catch(InterruptedException ex){
                     System.err.println(ex.getMessage());
             }
@@ -147,7 +147,7 @@ public class EBuyerScraper extends Thread{
             runThread = false;
         }
         // Set hibernate class to get sessionFactory
-        public void setHibernate(Hibernate hibernate){
-            this.hibernate = hibernate;
+        public void setLaptopDao(LaptopDao laptopDao){
+            this.laptopDao = laptopDao;
         }
 }

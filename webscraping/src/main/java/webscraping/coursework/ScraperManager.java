@@ -18,27 +18,26 @@ public class ScraperManager {
     ScraperManager() {
     }
     
+    // Method to get scraper list
     public List<Thread> getScraperList(){
         return scrapingThreads;
     }
     
+    // Method to set scraper list
     public void setScraperList(List<Thread> scrapingThreads){
         this.scrapingThreads = scrapingThreads;
     }
     
+    // Method to start the threads
     public void startThreads() {
         for(int i = 0; i < scrapingThreads.size(); i++){
             scrapingThreads.get(i).start();
         }
-    }
-    
-    public void joinThreads() {
-    // Join threads
-    try{
-        for(int i = 0; i < scrapingThreads.size();i++){
-            scrapingThreads.get(i).join();
-        } 
-    }   catch(InterruptedException ex){
+        try{
+            for(int i = 0; i < scrapingThreads.size();i++){
+                scrapingThreads.get(i).join();
+            } 
+        }   catch(InterruptedException ex){
             System.out.println("Interrupted exception thrown: " + ex.getMessage());
         }
     }
