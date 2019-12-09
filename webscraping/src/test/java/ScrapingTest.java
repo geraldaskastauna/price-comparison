@@ -8,9 +8,9 @@ package webscraping.coursework;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-class ScraperManagerTest {
+class ScrapingTest {
 
-    private final Laptop laptop = new Laptop();
+    private Laptop laptop = new Laptop();
     
     @Test
     void addition() {

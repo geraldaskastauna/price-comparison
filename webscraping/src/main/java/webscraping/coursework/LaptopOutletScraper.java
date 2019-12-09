@@ -7,6 +7,7 @@ package webscraping.coursework;
 
 import java.io.IOException;
 import static java.lang.Thread.sleep;
+import java.util.Arrays;
 import org.hibernate.Session;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,6 +24,9 @@ public class LaptopOutletScraper extends Thread{
         
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
+        
+        //Array of brands for scraping
+        private String[] brands = new String[]{"hp","dell","lenovo","acer","asus","microsoft","apple"};
         
         // Create objects to store info from website
         Product product = new Product();
@@ -45,91 +49,96 @@ public class LaptopOutletScraper extends Thread{
             System.out.println("Scraping " + domain + " laptops...");
             
             try{
-                // Scrape through 30 pages
-                for(int pages = 1; pages <= 30; pages++){
-                    
-                    //Download HTML document from website
-                    Document doc = Jsoup.connect("https://www.laptopoutlet.co.uk/laptops-and-notebooks.html?p=" + pages).get();
-                    
-                    //Get all of the products on the page
-                    Elements prods = doc.select(".item");
-                    
-                    //Work through the products
-                    for(int i=0; i<prods.size(); ++i){
-                        // Creates a new session
-                        Session session = laptopDao.getSessionFactory().getCurrentSession();
+                while(runThread){
+                    // Scrape through 30 pages
+                    for(int pages = 1; pages <= 30; pages++){
 
-                        //Get the product description
-                        Elements descriptionClass = prods.get(i).select(".product-name");
-                        String description = descriptionClass.text();
-                        
-                        // Store into database
-                        product.setDescription(description);
-                    
-                        //Get the product price
-                        Elements finalPrice = prods.get(i).select("div.price-box");
-                        Element priceClass = finalPrice.get(0).select("span.price").first();
-                        String priceString = priceClass.text().substring(1).replace(",","");
-                        String[] priceArray = priceString.split("\\s+");
-                        String priceArrayString = priceArray[0];
-                        double price = Double.parseDouble(priceArrayString);
-                        
-                        // Store into database
-                        laptop.setPrice(price);
-                        
-                        //Get the brand
-                        Elements brandA = descriptionClass.get(0).select("a");
-                        String brand = brandA.text();
-                        String[] brandArray = brand.split("\\s+");
-                        brand = brandArray[0].toLowerCase();
-                        if(brand.equals("best"))
-                            brand = brandArray[1].toLowerCase();
-                        
-                        // Store into database
-                        product.setBrand(brand);
-                        
-                        //Get image url
-                        Elements imageUrlClass = prods.get(i).select(".product-image-wrap");
-                        Elements imageUrlA = imageUrlClass.get(0).select("a");
-                        Element imageUrlAClass = imageUrlA.get(0).select("img").last();
-                        String imageUrl = imageUrlAClass.attr("src");
-                        
-                        // Store into database
-                        product.setImageUrl(imageUrl);
-                        
-                        //Get product url
-                        Element productUrlHref = imageUrlA.get(0).select("a").first();
-                        String productUrl = productUrlHref.attr("href");
-                        String queryString = productUrl.replace(domain, "");
-                        
-                        // Store into database
-                        url.setDomain(domain);
-                        url.setQueryString(queryString);
-                        
-                        //Output the data that we have downloaded
-                        System.out.println("\n https://www.laptopoutlet.co.uk/ description: " + description + 
-                                           ";\n https://www.laptopoutlet.co.uk/ price: " + price + 
-                                           ";\n https://www.laptopoutlet.co.uk/ brand: " + brand +
-                                           ";\n https://www.laptopoutlet.co.uk/ image url: " + imageUrl +
-                                           ";\n https://www.laptopoutlet.co.uk/ product url: " + productUrl);
+                        //Download HTML document from website
+                        Document doc = Jsoup.connect("https://www.laptopoutlet.co.uk/laptops-and-notebooks.html?p=" + pages).get();
 
-                        // Start transaction
-                        session.beginTransaction();
- 
-                        // Foreign keys
-                        laptop.setProduct(product);
-                        laptop.setUrl(url);
-                        
-                        // Add laptop, url and product to database (need to commit)
-                        session.save(url);
-                        session.save(product);
-                        session.save(laptop);
-                        
-                        //Commit transaction to save it to database
-                        session.getTransaction().commit();
-                        
-                        //Close the session and release database connection
-                        session.close();
+                        //Get all of the products on the page
+                        Elements prods = doc.select(".item");
+
+                        //Work through the products
+                        for(int i=0; i<prods.size(); ++i){
+                            // Creates a new session
+                            Session session = laptopDao.getSessionFactory().getCurrentSession();
+                            
+                            //Get the brand
+                            Elements brandA = prods.get(i).select(".product-name");
+                            String brand = brandA.text();
+                            String[] brandArray = brand.split("\\s+");
+                            brand = brandArray[0].toLowerCase();
+                            if(brand.equals("best"))
+                                brand = brandArray[1].toLowerCase();
+                            
+                            // Check for brand in brand array
+                            if(Arrays.asList(brands).contains(brand)){
+                                // Store into database
+                                product.setBrand(brand);
+
+                                //Get the product description
+                                Elements descriptionClass = prods.get(i).select(".product-name");
+                                String description = descriptionClass.text();
+
+                                // Store into database
+                                product.setDescription(description);
+
+                                //Get the product price
+                                Elements finalPrice = prods.get(i).select("div.price-box");
+                                Element priceClass = finalPrice.get(0).select("span.price").first();
+                                String priceString = priceClass.text().substring(1).replace(",","");
+                                String[] priceArray = priceString.split("\\s+");
+                                String priceArrayString = priceArray[0];
+                                double price = Double.parseDouble(priceArrayString);
+
+                                // Store into database
+                                laptop.setPrice(price);
+
+                                //Get image url
+                                Elements imageUrlClass = prods.get(i).select(".product-image-wrap");
+                                Elements imageUrlA = imageUrlClass.get(0).select("a");
+                                Element imageUrlAClass = imageUrlA.get(0).select("img").last();
+                                String imageUrl = imageUrlAClass.attr("src");
+
+                                // Store into database
+                                product.setImageUrl(imageUrl);
+
+                                //Get product url
+                                Element productUrlHref = imageUrlA.get(0).select("a").first();
+                                String productUrl = productUrlHref.attr("href");
+                                String queryString = productUrl.replace(domain, "");
+
+                                // Store into database
+                                url.setDomain(domain);
+                                url.setQueryString(queryString);
+
+                                //Output the data that we have downloaded
+                                System.out.println("\n https://www.laptopoutlet.co.uk/ description: " + description + 
+                                                   ";\n https://www.laptopoutlet.co.uk/ price: " + price + 
+                                                   ";\n https://www.laptopoutlet.co.uk/ brand: " + brand +
+                                                   ";\n https://www.laptopoutlet.co.uk/ image url: " + imageUrl +
+                                                   ";\n https://www.laptopoutlet.co.uk/ product url: " + productUrl);
+
+                                // Start transaction
+                                session.beginTransaction();
+
+                                // Foreign keys
+                                laptop.setProduct(product);
+                                laptop.setUrl(url);
+
+                                // Add laptop, url and product to database (need to commit)
+                                session.save(url);
+                                session.save(product);
+                                session.save(laptop);
+
+                                //Commit transaction to save it to database
+                                session.getTransaction().commit();
+
+                                //Close the session and release database connection
+                                session.close();
+                            }
+                        }
                     }
                 }
                 sleep(1000 * crawlDelay);
