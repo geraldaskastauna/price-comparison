@@ -3,8 +3,15 @@ package webscraping.coursework;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
+/**
+ *
+ * @author Geraldas Kastauna
+ */
 
-
+/**
+ * 
+ * Class that represents product table in database
+ */
 @Entity
 @Table(name = "product")
 /** Holds details about product */
@@ -27,6 +34,7 @@ public class Product implements Serializable {
     // Laptops image url
     private String imageUrl; 
     
+    // Foreign key mapping
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     Set<Laptop> laptop;

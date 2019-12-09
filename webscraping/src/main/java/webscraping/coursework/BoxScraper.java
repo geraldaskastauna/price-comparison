@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webscraping.coursework;
 
 import java.io.IOException;
@@ -15,16 +10,16 @@ import org.hibernate.Session;
 
 /**
  *
- * @author linux
+ * @author Geraldas Kastauna
  */
-public class BoxScraper extends Thread{
+public class BoxScraper extends Thread {
         //Specifies the interval between HTTP requests to the server in seconds.
         private final int crawlDelay = 5;
         
         //Allows us to shut down our application cleanly
         volatile private boolean runThread = false;
         
-        // Create objects to store info from website
+        // Create database objects to store info from website
         Product product = new Product();
         Laptop laptop = new Laptop();
         Url url = new Url();
@@ -32,6 +27,9 @@ public class BoxScraper extends Thread{
         // Class that generates sessionFactory
         LaptopDao laptopDao = new LaptopDao();
         
+        /**
+         * Run method to start box.co.uk scraper
+         */
         @Override
         public void run() {
             // Declare a domain name
@@ -39,6 +37,7 @@ public class BoxScraper extends Thread{
             
             // Start thread
             runThread = true;
+            
             System.out.println("Scraping " + domain + " laptops...");
             
             //Download HTML document from website
@@ -68,10 +67,11 @@ public class BoxScraper extends Thread{
                     for(int i=0; i<prods.size(); ++i){
                         // Creates new session
                         Session session = laptopDao.getSessionFactory().getCurrentSession();
-                        
+                                
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".p-list-points");
                         String description = descriptionClass.text();
+                        
                         // Store into database
                         product.setDescription(description);
                         
@@ -81,6 +81,7 @@ public class BoxScraper extends Thread{
                         String[] priceArray = priceString.split("\\s+");
                         String priceArrayString = priceArray[0];
                         double price = Double.parseDouble(priceArrayString);
+                        
                         // Store into database
                         laptop.setPrice(price);
                         
@@ -89,8 +90,10 @@ public class BoxScraper extends Thread{
                         Elements brandH = brandClass.get(0).select("h3");
                         String brandA = brandH.text();
                         String[] brandArray = brandA.split("\\s+");
-                        String brand = brandArray[0];
-                        product.setBrand(brand.toLowerCase());
+                        String brand = brandArray[0].toLowerCase();
+                        
+                        // Store into database
+                        product.setBrand(brand);
                         
                         //Get the image
                         Elements imageUrlDiv = prods.get(i).select("div.p-list");
@@ -99,6 +102,7 @@ public class BoxScraper extends Thread{
                         Elements imageUrlA = imageUrlTable.get(0).select("a");
                         Element imageUrlAClass = imageUrlTable.get(0).select(".lazyImage").last();
                         String imageUrl = domain.concat(imageUrlAClass.attr("data-src"));
+                        
                         // Store into database
                         product.setImageUrl(imageUrl);
                         
@@ -110,6 +114,7 @@ public class BoxScraper extends Thread{
                         Element productUrlA = productUrlTd.get(0).select("a").first();
                         String productUrl = productUrlA.attr("href");
                         String queryString = productUrl.replace(domain, "");
+                        
                         // Store into database
                         url.setDomain(domain);
                         url.setQueryString(queryString);
@@ -120,13 +125,15 @@ public class BoxScraper extends Thread{
                                            ";\n box.co.uk brand: " + brand +
                                            ";\n box.co.uk image url: " + imageUrl +
                                            ";\n box.co.uk product url: " + productUrl);
-                        // Start transaction
                         
+                        // Start transaction
                         session.beginTransaction();
  
-                        // Add laptop, url and product to database (need to commit)
+                        // Foreign keys
                         laptop.setProduct(product);
                         laptop.setUrl(url);
+                        
+                        // Add laptop, url and product to database (need to commit)
                         session.save(url);
                         session.save(product);
                         session.save(laptop);
@@ -136,7 +143,6 @@ public class BoxScraper extends Thread{
                         
                         //Close the session and release database connection
                         session.close();
-                        
                     }
                 }
                 sleep(1000 * crawlDelay);
@@ -146,12 +152,14 @@ public class BoxScraper extends Thread{
                     System.err.println(ex.getMessage());
             }
         }
+        
         // Other threads can stop this thread
         public void stopThread(){
             runThread = false;
         }
-        // Set hibernate class to get sessionFactory
-        public void setLaptopDao(LaptopDao laptop){
+        
+        // Set laptopDao class to get sessionFactory
+        public void setLaptopDao(LaptopDao laptopDao){
             this.laptopDao = laptopDao;
         }
 }

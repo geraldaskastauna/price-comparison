@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webscraping.coursework;
 
 import java.io.IOException;
@@ -14,7 +9,7 @@ import org.jsoup.select.Elements;
 
 /**
  *
- * @author linux
+ * @author Geraldas Kastauna
  */
 public class LaptopsDirectScraper extends Thread{
         //Specifies the interval between HTTP requests to the server in seconds.
@@ -31,12 +26,16 @@ public class LaptopsDirectScraper extends Thread{
         // Class that generates sessionFactory
         LaptopDao laptopDao = new LaptopDao();
         
+        /**
+         * Run method to start box.co.uk scraper
+         */
         public void run() {
             // Declare a domain name
             String domain = "https://www.laptopsdirect.co.uk";
             
             // Start thread
             runThread = true;
+            
             System.out.println("Scraping " + domain + " laptops...");
             
             //Download HTML document from website
@@ -71,10 +70,11 @@ public class LaptopsDirectScraper extends Thread{
                     for(int i=0; i<prods.size(); ++i){
                         // Creates new session
                         Session session = laptopDao.getSessionFactory().getCurrentSession();
-                        System.out.println(session);
+
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".productInfo");
                         String description = descriptionClass.text();
+                        
                         // Store into database
                         product.setDescription(description);
                         
@@ -84,6 +84,7 @@ public class LaptopsDirectScraper extends Thread{
                         String[] priceArray = priceString.split("\\s+");
                         String priceArrayString = priceArray[0];
                         double price = Double.parseDouble(priceArrayString);
+                        
                         // Store into database
                         laptop.setPrice(price);
                         
@@ -91,18 +92,20 @@ public class LaptopsDirectScraper extends Thread{
                         Elements brandClass = prods.get(i).select("a.offerboxtitle");
                         String brandA = brandClass.text();
                         String[] brandArray = brandA.split("\\s+");
-                        String brand = brandArray[0];
+                        String brand = brandArray[0].toLowerCase();
                         // Check for word Refurbished
-                        if(brand.contains("Refurbished"))
-                            brand = brandArray[1];
+                        if(brand.contains("refurbished"))
+                            brand = brandArray[1].toLowerCase();
+                        
                         // Store into database
-                        product.setBrand(brand.toLowerCase());
+                        product.setBrand(brand);
                         
                         //Get the image
                         Elements imageUrlClass = prods.get(i).select(".sr_image");
                         Elements imageUrlA = imageUrlClass.get(0).select(".offerImage");
                         Element imageUrlImg = imageUrlA.get(0).select("img").last();
                         String imageUrl = "https://www.laptopsdirect.co.uk" + imageUrlImg.attr("src");
+                        
                         // Store into database
                         product.setImageUrl(imageUrl);
                         
@@ -110,6 +113,7 @@ public class LaptopsDirectScraper extends Thread{
                         Element itemUrlA = imageUrlClass.get(0).select("a").last();
                         String productUrl = domain.concat(itemUrlA.attr("href"));
                         String queryString = itemUrlA.attr("href");
+                        
                         // Store into database
                         url.setDomain(domain);
                         url.setQueryString(queryString);
@@ -121,12 +125,14 @@ public class LaptopsDirectScraper extends Thread{
                                            ";\n https://www.laptopsdirect.co.uk image url: " + imageUrl +
                                            ";\n https://www.laptopsdirect.co.uk product url: " + productUrl);
 
-                        
+                        // Start transaction
                         session.beginTransaction();
  
-                        // Add laptop, url and product to database (need to commit)
+                        // Foreign keys
                         laptop.setProduct(product);
                         laptop.setUrl(url);
+                        
+                        // Add laptop, url and product to database (need to commit)
                         session.save(url);
                         session.save(product);
                         session.save(laptop);
@@ -136,7 +142,6 @@ public class LaptopsDirectScraper extends Thread{
                         
                         //Close the session and release database connection
                         session.close();
-                        
                     }
                 }
                 sleep(1000 * crawlDelay);
@@ -146,11 +151,13 @@ public class LaptopsDirectScraper extends Thread{
                     System.err.println(ex.getMessage());
             }
         }
+        
         // Other threads can stop this thread
         public void stopThread(){
             runThread = false;
         }
-        // Set hibernate class to get sessionFactory
+        
+        // Set laptopDao class to get sessionFactory
         public void setLaptopDao(LaptopDao laptopDao){
             this.laptopDao = laptopDao;
         }

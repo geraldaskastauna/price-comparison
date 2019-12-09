@@ -32,12 +32,16 @@ public class LaptopOutletScraper extends Thread{
         // Class that generates sessionFactory
         LaptopDao laptopDao = new LaptopDao();
         
+        /**
+         * Run method to start box.co.uk scraper
+         */
         public void run() {
             // Declare a domain name
             String domain = "https://www.laptopoutlet.co.uk/";
             
             // Start thread
             runThread = true;
+            
             System.out.println("Scraping " + domain + " laptops...");
             
             try{
@@ -54,10 +58,11 @@ public class LaptopOutletScraper extends Thread{
                     for(int i=0; i<prods.size(); ++i){
                         // Creates a new session
                         Session session = laptopDao.getSessionFactory().getCurrentSession();
-                        System.out.println(session);
+
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".product-name");
                         String description = descriptionClass.text();
+                        
                         // Store into database
                         product.setDescription(description);
                     
@@ -68,6 +73,7 @@ public class LaptopOutletScraper extends Thread{
                         String[] priceArray = priceString.split("\\s+");
                         String priceArrayString = priceArray[0];
                         double price = Double.parseDouble(priceArrayString);
+                        
                         // Store into database
                         laptop.setPrice(price);
                         
@@ -75,17 +81,19 @@ public class LaptopOutletScraper extends Thread{
                         Elements brandA = descriptionClass.get(0).select("a");
                         String brand = brandA.text();
                         String[] brandArray = brand.split("\\s+");
-                        brand = brandArray[0];
-                        if(brand.equals("Best"))
-                            brand = brandArray[1];
+                        brand = brandArray[0].toLowerCase();
+                        if(brand.equals("best"))
+                            brand = brandArray[1].toLowerCase();
+                        
                         // Store into database
-                        product.setBrand(brand.toLowerCase());
+                        product.setBrand(brand);
                         
                         //Get image url
                         Elements imageUrlClass = prods.get(i).select(".product-image-wrap");
                         Elements imageUrlA = imageUrlClass.get(0).select("a");
                         Element imageUrlAClass = imageUrlA.get(0).select("img").last();
                         String imageUrl = imageUrlAClass.attr("src");
+                        
                         // Store into database
                         product.setImageUrl(imageUrl);
                         
@@ -93,6 +101,7 @@ public class LaptopOutletScraper extends Thread{
                         Element productUrlHref = imageUrlA.get(0).select("a").first();
                         String productUrl = productUrlHref.attr("href");
                         String queryString = productUrl.replace(domain, "");
+                        
                         // Store into database
                         url.setDomain(domain);
                         url.setQueryString(queryString);
@@ -104,12 +113,14 @@ public class LaptopOutletScraper extends Thread{
                                            ";\n https://www.laptopoutlet.co.uk/ image url: " + imageUrl +
                                            ";\n https://www.laptopoutlet.co.uk/ product url: " + productUrl);
 
-                        
+                        // Start transaction
                         session.beginTransaction();
  
-                        // Add laptop, url and product to database (need to commit)
+                        // Foreign keys
                         laptop.setProduct(product);
                         laptop.setUrl(url);
+                        
+                        // Add laptop, url and product to database (need to commit)
                         session.save(url);
                         session.save(product);
                         session.save(laptop);
@@ -119,7 +130,6 @@ public class LaptopOutletScraper extends Thread{
                         
                         //Close the session and release database connection
                         session.close();
-                        
                     }
                 }
                 sleep(1000 * crawlDelay);
@@ -129,11 +139,13 @@ public class LaptopOutletScraper extends Thread{
                     System.err.println(ex.getMessage());
             }
         }
+        
         // Other threads can stop this thread
         public void stopThread(){
             runThread = false;
         }
-        // Set hibernate class to get sessionFactory
+        
+        // Set laptopDao class to get sessionFactory
         public void setLaptopDao(LaptopDao laptopDao){
             this.laptopDao = laptopDao;
         }

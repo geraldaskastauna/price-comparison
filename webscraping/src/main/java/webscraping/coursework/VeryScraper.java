@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webscraping.coursework;
 
 import java.io.IOException;
@@ -15,7 +10,7 @@ import org.jsoup.nodes.Element;
 
 /**
  *
- * @author linux
+ * @author Geraldas Kastauna
  */
 public class VeryScraper extends Thread {
         //Specifies the interval between HTTP requests to the server in seconds.
@@ -32,6 +27,9 @@ public class VeryScraper extends Thread {
         // Class that generates sessionFactory
         LaptopDao laptopDao = new LaptopDao();
         
+        /**
+         * Run method to start box.co.uk scraper
+         */
         public void run() {
             // Declare a domain name
             String domain = "http://www.very.co.uk";
@@ -114,8 +112,7 @@ public class VeryScraper extends Thread {
                                            ";\n http://www.very.co.uk brand: " + brand +
                                            ";\n http://www.very.co.uk image url: " + imageUrl +
                                            ";\n http://www.very.co.uk product url: " + productUrl);
-                                                // Start transaction
-
+                        // Start transaction
                         session.beginTransaction();
  
                         // Add laptop, url and product to database (need to commit)

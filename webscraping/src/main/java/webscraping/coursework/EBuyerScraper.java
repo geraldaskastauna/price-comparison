@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webscraping.coursework;
 
 import java.io.IOException;
@@ -15,7 +10,7 @@ import org.jsoup.select.Elements;
 
 /**
  *
- * @author linux
+ * @author Geraldas Kastauna
  */
 public class EBuyerScraper extends Thread{
         //Specifies the interval between HTTP requests to the server in seconds.
@@ -32,23 +27,27 @@ public class EBuyerScraper extends Thread{
         // Class that generates sessionFactory
         LaptopDao laptopDao = new LaptopDao();
         
+        /**
+         * Run method to start box.co.uk scraper
+         */
         public void run() {
             // Declare a domain name
             String domain = "https://www.ebuyer.com";
             
             // Start thread
             runThread = true;
+            
             System.out.println("Scraping " + domain + " laptops...");
             
             //Download HTML document from website
             try{
+                //Set starting page and total pages to for scraping
                 int startingPage = 1;
                 int totalPages = 15;
                 
                 //HTML document from website to get the amount of pages
                 Document docForPages = Jsoup.connect("https://www.ebuyer.com/store/Computer/cat/Laptops?page=" + startingPage).get();
                 
-             
                 for(int pages = 1; pages <= 15; pages++){
                     //HTML document from website
                     Document doc = Jsoup.connect("https://www.ebuyer.com/store/Computer/cat/Laptops?page=" + pages).get();
@@ -60,7 +59,7 @@ public class EBuyerScraper extends Thread{
                     for(int i=0; i<prods.size(); ++i){
                         // Creates new session
                         Session session = laptopDao.getSessionFactory().getCurrentSession();
-                        System.out.println(session);
+                        
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".grid-item__ksp");
                         String description = descriptionClass.text();
@@ -82,6 +81,7 @@ public class EBuyerScraper extends Thread{
                             String priceArrayString = priceArray[1];
                             price = Double.parseDouble(priceArrayString);
                         }
+                        
                         // Store into database
                         laptop.setPrice(price);
                         
@@ -90,18 +90,20 @@ public class EBuyerScraper extends Thread{
                         Elements brandA = brandClass.get(0).select("a");
                         String brand = brandA.text();
                         String[] brandArray = brand.split("\\s+");
-                        brand = brandArray[0];
+                        brand = brandArray[0].toLowerCase();
                         // Check for word Refurbished
-                        if(brand.contains("REFURBISHED"))
-                            brand = brandArray[1];
+                        if(brand.contains("refurbished"))
+                            brand = brandArray[1].toLowerCase();
+                        
                         // Store into database
-                        product.setBrand(brand.toLowerCase());
+                        product.setBrand(brand);
                         
                         //Get the image
                         Elements imageUrlDiv = prods.get(i).select("div.grid-item__img");
                         Elements imageUrlA = imageUrlDiv.get(0).select("a");
                         Element imageUrlAClass = imageUrlA.get(0).select("img").last();
                         String imageUrl = imageUrlAClass.attr("src");
+                        
                         // Store into database
                         product.setImageUrl(imageUrl);
                         
@@ -110,6 +112,7 @@ public class EBuyerScraper extends Thread{
                         String productUrlHref = productUrlA.attr("href");
                         String productUrl = domain.concat(productUrlHref);
                         String queryString = productUrl.replace(domain, "");
+                        
                         // Store into database
                         url.setDomain(domain);
                         url.setQueryString(queryString);
@@ -120,14 +123,15 @@ public class EBuyerScraper extends Thread{
                                            ";\n https://www.ebuyer.com brand: " + brand +
                                            ";\n https://www.ebuyer.com image url: " + imageUrl +
                                            ";\n https://www.ebuyer.com product url: " + productUrl);
-                                                // Start transaction
-
                         
+                        // Start transaction
                         session.beginTransaction();
  
-                        // Add laptop, url and product to database (need to commit)
+                        // Foreign keys
                         laptop.setProduct(product);
                         laptop.setUrl(url);
+                        
+                        // Add laptop, url and product to database (need to commit)
                         session.save(url);
                         session.save(product);
                         session.save(laptop);
@@ -137,21 +141,22 @@ public class EBuyerScraper extends Thread{
                         
                         //Close the session and release database connection
                         session.close();
-                        
                     }
                 }
-                sleep(1000 * crawlDelay);
+                    sleep(1000 * crawlDelay);
             }   catch (IOException ex) {
                     System.out.println("Error while accessing the EBUYER.COM website");
             }   catch(InterruptedException ex){
                     System.err.println(ex.getMessage());
             }
         }
+        
         // Other threads can stop this thread
         public void stopThread(){
             runThread = false;
         }
-        // Set hibernate class to get sessionFactory
+        
+        // Set laptopDao class to get sessionFactory
         public void setLaptopDao(LaptopDao laptopDao){
             this.laptopDao = laptopDao;
         }

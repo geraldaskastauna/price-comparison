@@ -10,12 +10,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ *
+ * @author Geraldas Kastauna
+ */
+
+/**
  * AppConfig class that holds SPRING beans.
  */
 @Configuration
 public class AppConfig {
     // Create sessionFactory with null value
-    SessionFactory sessionFactory;
+    SessionFactory sessionFactory = null;
 
     /**
     * Scraper Manager Bean
@@ -42,18 +47,6 @@ public class AppConfig {
     
     // Return scraperManager object
     return scraperManager;
-    }
-    
-    /**
-    * box.co.uk Scraper bean
-    *
-    * @return an instance of box.co.uk scraper object with set Laptop DAO
-    */
-    @Bean
-    public BoxScraper boxScraper(){
-        BoxScraper box = new BoxScraper();
-        box.setLaptopDao(laptopDao());
-        return box;
     }
     
     /**
@@ -101,6 +94,18 @@ public class AppConfig {
         VeryScraper very = new VeryScraper();
         very.setLaptopDao(laptopDao());
         return very;
+    }
+    
+    /**
+    * box.co.uk Scraper bean
+    *
+    * @return an instance of box.co.uk scraper object with set Laptop DAO
+    */
+    @Bean
+    public BoxScraper boxScraper(){
+        BoxScraper box = new BoxScraper();
+        box.setLaptopDao(laptopDao());
+        return box;
     }
     
     /**

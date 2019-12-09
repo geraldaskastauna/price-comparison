@@ -1,19 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webscraping.coursework;
 
 import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.*;
 
 /**
  *
- * @author linux
+ * @author Geraldas Kastauna
  */
 
+/**
+ * 
+ * Class that represents laptop table in database
+ */
 @Entity
 @Table(name = "laptop")
 /** Holds details about laptop */
@@ -27,10 +25,13 @@ public class Laptop implements Serializable {
     @Column(name = "price")
     // Laptops price
     private double price;
+    
+    //Foreign key mapping for product_id
     @ManyToOne
     @JoinColumn(name = "product_id")
     Product product;
     
+    //Foreign key mapping for url_id
     @ManyToOne
     @JoinColumn(name = "url_id")
     Url url;

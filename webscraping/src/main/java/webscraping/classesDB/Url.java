@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webscraping.coursework;
 
 import java.io.Serializable;
@@ -11,7 +6,12 @@ import javax.persistence.*;
 
 /**
  *
- * @author linux
+ * @author Geraldas Kastauna
+ */
+
+/**
+ * 
+ * Class that represents url table in database
  */
 @Entity
 @Table (name = "url")
@@ -27,6 +27,7 @@ public class Url implements Serializable {
     @Column(name = "query_string")
     private String queryString;
     
+    // Foreign key mapping
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "url_id")
     Set<Laptop> laptop;
