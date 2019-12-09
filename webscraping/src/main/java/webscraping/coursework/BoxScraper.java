@@ -121,18 +121,22 @@ public class BoxScraper extends Thread{
                                            ";\n box.co.uk image url: " + imageUrl +
                                            ";\n box.co.uk product url: " + productUrl);
                         // Start transaction
+                        
                         session.beginTransaction();
  
                         // Add laptop, url and product to database (need to commit)
-                        session.save(laptop);
+                        laptop.setProduct(product);
+                        laptop.setUrl(url);
                         session.save(url);
                         session.save(product);
+                        session.save(laptop);
                         
                         //Commit transaction to save it to database
                         session.getTransaction().commit();
                         
                         //Close the session and release database connection
                         session.close();
+                        
                     }
                 }
                 sleep(1000 * crawlDelay);

@@ -27,8 +27,9 @@ public class Product implements Serializable {
     // Laptops image url
     private String imageUrl; 
     
-    @OneToOne(mappedBy = "product")
-    private Laptop laptop;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
+    Set<Laptop> laptop;
     
     /** Empty constructor */
     public Product(){

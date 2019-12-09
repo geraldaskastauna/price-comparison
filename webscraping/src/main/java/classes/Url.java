@@ -27,8 +27,9 @@ public class Url implements Serializable {
     @Column(name = "query_string")
     private String queryString;
     
-    @OneToOne(mappedBy = "url")
-    private Laptop laptop;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "url_id")
+    Set<Laptop> laptop;
     
     /** Empty url constructor */
     public Url() {

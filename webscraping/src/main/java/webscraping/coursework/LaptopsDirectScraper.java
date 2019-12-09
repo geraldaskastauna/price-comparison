@@ -71,7 +71,7 @@ public class LaptopsDirectScraper extends Thread{
                     for(int i=0; i<prods.size(); ++i){
                         // Creates new session
                         Session session = laptopDao.getSessionFactory().getCurrentSession();
-                        
+                        System.out.println(session);
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".productInfo");
                         String description = descriptionClass.text();
@@ -120,19 +120,23 @@ public class LaptopsDirectScraper extends Thread{
                                            ";\n https://www.laptopsdirect.co.uk brand: " + brand +
                                            ";\n https://www.laptopsdirect.co.uk image url: " + imageUrl +
                                            ";\n https://www.laptopsdirect.co.uk product url: " + productUrl);
-                        // Start transaction
-                        session.beginTransaction();
 
+                        
+                        session.beginTransaction();
+ 
                         // Add laptop, url and product to database (need to commit)
-                        session.save(laptop);
+                        laptop.setProduct(product);
+                        laptop.setUrl(url);
                         session.save(url);
                         session.save(product);
+                        session.save(laptop);
                         
                         //Commit transaction to save it to database
                         session.getTransaction().commit();
                         
                         //Close the session and release database connection
                         session.close();
+                        
                     }
                 }
                 sleep(1000 * crawlDelay);

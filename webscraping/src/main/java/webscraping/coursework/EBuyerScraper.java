@@ -60,7 +60,7 @@ public class EBuyerScraper extends Thread{
                     for(int i=0; i<prods.size(); ++i){
                         // Creates new session
                         Session session = laptopDao.getSessionFactory().getCurrentSession();
-                        
+                        System.out.println(session);
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".grid-item__ksp");
                         String description = descriptionClass.text();
@@ -120,19 +120,24 @@ public class EBuyerScraper extends Thread{
                                            ";\n https://www.ebuyer.com brand: " + brand +
                                            ";\n https://www.ebuyer.com image url: " + imageUrl +
                                            ";\n https://www.ebuyer.com product url: " + productUrl);
-                        // Start transaction
-                        session.beginTransaction();  
+                                                // Start transaction
+
                         
+                        session.beginTransaction();
+ 
                         // Add laptop, url and product to database (need to commit)
-                        session.save(laptop);
+                        laptop.setProduct(product);
+                        laptop.setUrl(url);
                         session.save(url);
                         session.save(product);
+                        session.save(laptop);
                         
                         //Commit transaction to save it to database
                         session.getTransaction().commit();
-
+                        
                         //Close the session and release database connection
                         session.close();
+                        
                     }
                 }
                 sleep(1000 * crawlDelay);

@@ -27,14 +27,13 @@ public class Laptop implements Serializable {
     @Column(name = "price")
     // Laptops price
     private double price;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    Product product;
     
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
-    
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "url_id", referencedColumnName = "id")
-    private Url url;
+    @ManyToOne
+    @JoinColumn(name = "url_id")
+    Url url;
     
     /** Empty laptop constructor */
     public Laptop() {
@@ -48,6 +47,14 @@ public class Laptop implements Serializable {
     
     public double getPrice() {
         return price;
+    }
+    
+    public void setProduct(Product product){
+        this.product = product;
+    }
+    
+    public void setUrl(Url url){
+        this.url = url;
     }
     
     public void setId(int id) {

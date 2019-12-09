@@ -4,9 +4,9 @@ webscraping/coursework/VeryScraper.class
 webscraping/coursework/Main.class
 webscraping/coursework/ScraperManager.class
 webscraping/coursework/BoxScraper.class
+webscraping/coursework/LaptopDao.class
 webscraping/coursework/AppConfig.class
 webscraping/coursework/LaptopOutletScraper.class
 webscraping/coursework/Url.class
 webscraping/coursework/LaptopsDirectScraper.class
 webscraping/coursework/EBuyerScraper.class
-webscraping/coursework/Hibernate.class

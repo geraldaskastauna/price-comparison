@@ -6,6 +6,9 @@
 package webscraping.coursework;
 
 import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,16 +32,29 @@ public class ScraperManager {
     }
     
     // Method to start the threads
-    public void startThreads() {
-        for(int i = 0; i < scrapingThreads.size(); i++){
-            scrapingThreads.get(i).start();
+    public void startScraping() {
+        for(Thread scraper : scrapingThreads){
+            scraper.start();
         }
-        try{
-            for(int i = 0; i < scrapingThreads.size();i++){
-                scrapingThreads.get(i).join();
-            } 
-        }   catch(InterruptedException ex){
-            System.out.println("Interrupted exception thrown: " + ex.getMessage());
+        
+        //Wait until the user types stop
+        Scanner scanner = new Scanner(System.in);
+        String userInput = scanner.nextLine();
+        while (!userInput.equals("stop")) {
+            userInput = scanner.nextLine();
+        }
+ /*       
+        //Wait for web scrapers to stop
+        for (Thread scraper : scrapingThreads) {
+            try {
+                scraper.
+                scraper.join();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        System.out.println("Scraping terminated");
+*/
         }
     }
-}

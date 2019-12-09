@@ -54,7 +54,7 @@ public class LaptopOutletScraper extends Thread{
                     for(int i=0; i<prods.size(); ++i){
                         // Creates a new session
                         Session session = laptopDao.getSessionFactory().getCurrentSession();
-                        
+                        System.out.println(session);
                         //Get the product description
                         Elements descriptionClass = prods.get(i).select(".product-name");
                         String description = descriptionClass.text();
@@ -103,19 +103,23 @@ public class LaptopOutletScraper extends Thread{
                                            ";\n https://www.laptopoutlet.co.uk/ brand: " + brand +
                                            ";\n https://www.laptopoutlet.co.uk/ image url: " + imageUrl +
                                            ";\n https://www.laptopoutlet.co.uk/ product url: " + productUrl);
-                        // Start transaction
+
+                        
                         session.beginTransaction();
-                      
+ 
                         // Add laptop, url and product to database (need to commit)
-                        session.save(laptop);
+                        laptop.setProduct(product);
+                        laptop.setUrl(url);
                         session.save(url);
                         session.save(product);
+                        session.save(laptop);
                         
                         //Commit transaction to save it to database
                         session.getTransaction().commit();
                         
                         //Close the session and release database connection
                         session.close();
+                        
                     }
                 }
                 sleep(1000 * crawlDelay);

@@ -23,6 +23,6 @@ public class Main {
     ScraperManager scraperManager = (ScraperManager) context.getBean("scraperManager");
     
     // Start and join scrapers
-    scraperManager.startThreads();
+    scraperManager.startScraping();
     }
 }

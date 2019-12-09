@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webscraping.coursework;
 
 import java.util.ArrayList;
@@ -22,24 +17,38 @@ public class AppConfig {
     // Create sessionFactory with null value
     SessionFactory sessionFactory;
 
+    /**
+    * Scraper Manager Bean
+    *
+    * @return an instance of ScraperManager with a defined list of Web Scrapers
+    */
     @Bean
     public ScraperManager scraperManager(){
+    // Initialize ScraperManager object
     ScraperManager scraperManager = new ScraperManager();
         
     //Create list of web scrapers and add to scraper manager
     List<Thread> scraperList = new ArrayList();
-        
+    
+    //Add scraper objects to scrapers list
     scraperList.add(boxScraper());
     scraperList.add(eBuyerScraper());
     scraperList.add(laptopOutletScraper());
     scraperList.add(laptopsDirectScraper());
     scraperList.add(veryScraper());
     
+    // Send full scrapers list to scraperManager
     scraperManager.setScraperList(scraperList);
     
+    // Return scraperManager object
     return scraperManager;
     }
     
+    /**
+    * box.co.uk Scraper bean
+    *
+    * @return an instance of box.co.uk scraper object with set Laptop DAO
+    */
     @Bean
     public BoxScraper boxScraper(){
         BoxScraper box = new BoxScraper();
@@ -47,13 +56,11 @@ public class AppConfig {
         return box;
     }
     
-    @Bean
-    public EBuyerScraper eBuyerScraper(){
-        EBuyerScraper eBuyer = new EBuyerScraper();
-        eBuyer.setLaptopDao(laptopDao());
-        return eBuyer;
-    }
-    
+    /**
+    * laptopoutlet.co.uk Scraper bean
+    *
+    * @return an instance of laptopoutlet.co.uk scraper object with set Laptop DAO
+    */
     @Bean
     public LaptopOutletScraper laptopOutletScraper(){
         LaptopOutletScraper laptopOutlet = new LaptopOutletScraper();
@@ -61,13 +68,34 @@ public class AppConfig {
         return laptopOutlet;
     }
     
+    /**
+    * ebuyer.co.uk Scraper bean
+    *
+    * @return an instance of ebuyer.co.uk scraper object with set Laptop DAO
+    */
+    @Bean
+    public EBuyerScraper eBuyerScraper(){
+        EBuyerScraper eBuyer = new EBuyerScraper();
+        eBuyer.setLaptopDao(laptopDao());
+        return eBuyer;
+    }
+    
+    /**
+    * laptopsdirect.co.uk Scraper bean
+    *
+    * @return an instance of laptopsdirect.co.uk scraper object with set Laptop DAO
+    */
     @Bean
     public LaptopsDirectScraper laptopsDirectScraper(){
         LaptopsDirectScraper laptopsDirect = new LaptopsDirectScraper();
         laptopsDirect.setLaptopDao(laptopDao());
         return laptopsDirect;
     }
-    
+    /**
+    * very.co.uk Scraper bean
+    *
+    * @return an instance of very.co.uk scraper object with set Laptop DAO
+    */
     @Bean
     public VeryScraper veryScraper(){
         VeryScraper very = new VeryScraper();
@@ -75,13 +103,23 @@ public class AppConfig {
         return very;
     }
     
+    /**
+    * Laptop DAO bean
+    *
+    * @return an instance of LaptopDao with session factory set.
+    */
     @Bean
     public LaptopDao laptopDao(){
-        LaptopDao hibernate = new LaptopDao();
-        hibernate.setSessionFactory(sessionFactory());
-        return hibernate;
+        LaptopDao laptopDao = new LaptopDao();
+        laptopDao.setSessionFactory(sessionFactory());
+        return laptopDao;
     }
-    
+        
+    /**
+    * Session Factory bean
+    *
+    * @return instance of session factory.
+    */
     @Bean
     public SessionFactory sessionFactory(){
         if(sessionFactory == null){
