@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="webscraping.coursework.ScrapingTest" time="1.499" tests="5" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="webscraping.coursework.ScrapingTest" time="1.599" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="gnome"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
@@ -14,11 +14,10 @@
     <property name="user.timezone" value=""/>
     <property name="java.vm.specification.version" value="1.8"/>
     <property name="os.name" value="Linux"/>
-    <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="GB"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64"/>
-    <property name="sun.java.command" value="/home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/target/surefire/surefirebooter2268527705105099980.jar /home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/target/surefire 2019-12-10T12-59-04_817-jvmRun1 surefire4069605165629081176tmp surefire_04620692198725958703tmp"/>
-    <property name="test" value="ScrapingTest"/>
+    <property name="sun.java.command" value="/home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/target/surefire/surefirebooter4918373687796888024.jar /home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/target/surefire 2019-12-10T14-16-45_504-jvmRun1 surefire6218656383194188532tmp surefire_05611790075063786840tmp"/>
     <property name="surefire.test.class.path" value="/home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/target/test-classes:/home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/target/classes:/home/linux/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.2.0/junit-jupiter-api-5.2.0.jar:/home/linux/.m2/repository/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.jar:/home/linux/.m2/repository/org/opentest4j/opentest4j/1.1.0/opentest4j-1.1.0.jar:/home/linux/.m2/repository/org/junit/platform/junit-platform-commons/1.2.0/junit-platform-commons-1.2.0.jar:/home/linux/.m2/repository/org/tinylog/tinylog/1.3.5/tinylog-1.3.5.jar:/home/linux/.m2/repository/org/jsoup/jsoup/1.12.1/jsoup-1.12.1.jar:/home/linux/.m2/repository/org/springframework/spring-context/5.0.8.RELEASE/spring-context-5.0.8.RELEASE.jar:/home/linux/.m2/repository/org/springframework/spring-aop/5.0.8.RELEASE/spring-aop-5.0.8.RELEASE.jar:/home/linux/.m2/repository/org/springframework/spring-beans/5.0.8.RELEASE/spring-beans-5.0.8.RELEASE.jar:/home/linux/.m2/repository/org/springframework/spring-core/5.0.8.RELEASE/spring-core-5.0.8.RELEASE.jar:/home/linux/.m2/repository/org/springframework/spring-jcl/5.0.8.RELEASE/spring-jcl-5.0.8.RELEASE.jar:/home/linux/.m2/repository/org/springframework/spring-expression/5.0.8.RELEASE/spring-expression-5.0.8.RELEASE.jar:/home/linux/.m2/repository/org/hibernate/hibernate-core/5.3.6.Final/hibernate-core-5.3.6.Final.jar:/home/linux/.m2/repository/org/jboss/logging/jboss-logging/3.3.2.Final/jboss-logging-3.3.2.Final.jar:/home/linux/.m2/repository/javax/persistence/javax.persistence-api/2.2/javax.persistence-api-2.2.jar:/home/linux/.m2/repository/org/javassist/javassist/3.23.1-GA/javassist-3.23.1-GA.jar:/home/linux/.m2/repository/net/bytebuddy/byte-buddy/1.8.17/byte-buddy-1.8.17.jar:/home/linux/.m2/repository/antlr/antlr/2.7.7/antlr-2.7.7.jar:/home/linux/.m2/repository/org/jboss/spec/javax/transaction/jboss-transaction-api_1.2_spec/1.1.1.Final/jboss-transaction-api_1.2_spec-1.1.1.Final.jar:/home/linux/.m2/repository/org/jboss/jandex/2.0.5.Final/jandex-2.0.5.Final.jar:/home/linux/.m2/repository/com/fasterxml/classmate/1.3.4/classmate-1.3.4.jar:/home/linux/.m2/repository/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.jar:/home/linux/.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar:/home/linux/.m2/repository/org/hibernate/common/hibernate-commons-annotations/5.0.4.Final/hibernate-commons-annotations-5.0.4.Final.jar:/home/linux/.m2/repository/mysql/mysql-connector-java/8.0.12/mysql-connector-java-8.0.12.jar:/home/linux/.m2/repository/com/google/protobuf/protobuf-java/2.6.0/protobuf-java-2.6.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="/home/linux"/>
@@ -31,7 +30,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="/home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/target/surefire/surefirebooter2268527705105099980.jar"/>
+    <property name="surefire.real.class.path" value="/home/linux/NetBeansProjects/webscraping-coursework1/price-comparison/webscraping/target/surefire/surefirebooter4918373687796888024.jar"/>
     <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/resources.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jsse.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jce.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/charsets.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jfr.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/classes"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="1.8.0_222-8u222-b10-1ubuntu1~16.04.1-b10"/>
@@ -42,7 +41,6 @@
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
-    <property name="maven.ext.class.path" value="/home/linux/netbeans-11.2/netbeans/java/maven-nblib/netbeans-eventspy.jar"/>
     <property name="localRepository" value="/home/linux/.m2/repository"/>
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
     <property name="java.io.tmpdir" value="/tmp"/>
@@ -52,7 +50,7 @@
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
     <property name="sun.os.patch.level" value="unknown"/>
-    <property name="java.library.path" value="/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="java.library.path" value="/home/linux/catkin_ws/devel/lib:/opt/ros/kinetic/lib:/opt/ros/kinetic/lib/x86_64-linux-gnu:/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
     <property name="java.vm.info" value="mixed mode"/>
     <property name="java.vendor" value="Private Build"/>
     <property name="java.vm.version" value="25.222-b10"/>
@@ -60,9 +58,9 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="52.0"/>
   </properties>
-  <testcase name="scraperManagerList" classname="webscraping.coursework.ScrapingTest" time="0.002"/>
-  <testcase name="scrapingThreads" classname="webscraping.coursework.ScrapingTest" time="0.003"/>
-  <testcase name="sessionFactoryMethod" classname="webscraping.coursework.ScrapingTest" time="1.107"/>
-  <testcase name="test" classname="webscraping.coursework.ScrapingTest" time="0.383"/>
+  <testcase name="scraperManagerList" classname="webscraping.coursework.ScrapingTest" time="0.004"/>
+  <testcase name="scrapingThreads" classname="webscraping.coursework.ScrapingTest" time="0.018"/>
+  <testcase name="sessionFactoryMethod" classname="webscraping.coursework.ScrapingTest" time="1.175"/>
+  <testcase name="test" classname="webscraping.coursework.ScrapingTest" time="0.393"/>
   <testcase name="settingProductElements" classname="webscraping.coursework.ScrapingTest" time="0"/>
 </testsuite>
