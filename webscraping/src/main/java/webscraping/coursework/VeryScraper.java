@@ -122,8 +122,10 @@ public class VeryScraper extends Thread {
                                                    ";\n http://www.very.co.uk product url: " + productUrl);
                                 // Start transaction
                                 session.beginTransaction();
-
+    
+                                // Check if duplicate exists
                                 if(!laptopDao.duplicateExist(domain, queryString, session)){
+                                    // Duplicate doesnt exist
                                     // Foreign keys
                                     laptop.setProduct(product);
                                     laptop.setUrl(url);
@@ -139,6 +141,8 @@ public class VeryScraper extends Thread {
                                     //Close the session and release database connection
                                     session.close();
                                 } else {
+                                    // Duplicate exists
+                                    // Update laptop
                                     session.update(laptop);
                                     session.update(product);
                                     session.update(url);

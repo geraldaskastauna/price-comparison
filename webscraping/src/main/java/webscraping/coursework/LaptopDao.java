@@ -30,8 +30,9 @@ public class LaptopDao {
     /**
      * Check if the duplicate of the product exists in the database
      *
-     * @param name description of the product
-     * @param weight weight of the product
+     * @param domain domain of the laptop
+     * @param queryString query_string of the laptop
+     * @param session session from sessionFactory
      * @return true or false - duplicate exists or not
      */
     public Boolean duplicateExist(String domain, String queryString, Session session) {

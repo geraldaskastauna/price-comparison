@@ -136,7 +136,9 @@ public class BoxScraper extends Thread {
                                 // Start transaction
                                 session.beginTransaction();
                                 
+                                // Check if duplicate exists
                                 if(!laptopDao.duplicateExist(domain, queryString, session)){
+                                    // Duplicate doesnt exist
                                     // Foreign keys
                                     laptop.setProduct(product);
                                     laptop.setUrl(url);
@@ -152,6 +154,8 @@ public class BoxScraper extends Thread {
                                     //Close the session and release database connection
                                     session.close();
                                 } else {
+                                    // Duplicate exists
+                                    // Update laptop
                                     session.update(laptop);
                                     session.update(product);
                                     session.update(url);

@@ -135,7 +135,9 @@ public class LaptopsDirectScraper extends Thread{
                                 // Start transaction
                                 session.beginTransaction();
 
+                                // Check if duplicate exist
                                 if(!laptopDao.duplicateExist(domain, queryString, session)){
+                                    // Duplicate doesnt exist
                                     // Foreign keys
                                     laptop.setProduct(product);
                                     laptop.setUrl(url);
@@ -151,6 +153,8 @@ public class LaptopsDirectScraper extends Thread{
                                     //Close the session and release database connection
                                     session.close();
                                 } else {
+                                    // Duplicate exists
+                                    // Update laptop
                                     session.update(laptop);
                                     session.update(product);
                                     session.update(url);
