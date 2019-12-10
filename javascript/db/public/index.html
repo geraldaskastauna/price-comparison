@@ -12,12 +12,12 @@
 <body>
 
     <div id="app">
-        <h1>Cereals</h1>
-        <p v-for="cereal in cereals">
-            <b>id</b>: {{cereal.id}};
-            <b>name</b>: {{cereal.name}};
-            <b>weight</b>: {{cereal.weight}};
-            <b>price</b>: {{cereal.price}}
+        <h1>Laptop</h1>
+        <p v-for="laptop in laptops">
+            <b>id</b>: {{laptop.id}};
+            <b>product_id</b>: {{laptop.product_id}};
+            <b>url_id</b>: {{laptop.url_id}};
+            <b>price</b>: {{laptop.price}}
         </p>
     </div>
 
@@ -26,17 +26,17 @@
         var app = new Vue({
             el: '#app',
             data: {
-                cereals: []
+                laptop: []
             },
             methods : {
                 //Get all the cereals from the web service using Axios.
-                loadAllCereals: function (){
+                loadAllLaptop: function (){
                     var localApp = this;
-                    axios.get('/cereals')//Send GET request to cereals path
+                    axios.get('/laptop')//Send GET request to cereals path
                         .then(function (response) {//Request successful
                             //Point cereals in data to returned array of cereals
-                            localApp.cereals = response.data.cereals;
-                            console.log(JSON.stringify(response.data.cereals));
+                            localApp.laptop = response.data.laptop;
+                            console.log(JSON.stringify(response.data.laptop));
                         })
                         .catch(function (error) {
                             //Handle error
@@ -46,10 +46,10 @@
             },
             created: function(){//Vue lifecycle hook, called when data is loaded.
                 //Load cereals from web service
-                this.loadAllCereals();
+                this.loadAllLaptop();
 
                 //Refresh cereals every 5 seconds
-                setInterval(this.loadAllCereals, 5000);
+                setInterval(this.loadAllLaptop, 5000);
             }
         })
 
