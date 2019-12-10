@@ -51,7 +51,7 @@ class ScrapingTest {
     }
     
     @Test
-    @DisplayName("Test sessionFactory method from LaptopDao class")
+    @DisplayName("Test sessionFactory method from LaptopDao class (DATABASE REQUIRED)")
     void sessionFactoryMethod() {
         // Instance of a class that we want to test
         LaptopDao laptopDao = new LaptopDao();
@@ -61,7 +61,7 @@ class ScrapingTest {
             // Create a sessionFactory
             laptopDao.setSessionFactory(app.sessionFactory());
         } catch(Exception ex) {
-            fail("Failed setting sessionFactory" + ex.getMessage());
+            fail("Failed setting sessionFactory (IS THE DATABASE ON?)" + ex.getMessage());
         }
         
         // Check if sessionFactory is not null
