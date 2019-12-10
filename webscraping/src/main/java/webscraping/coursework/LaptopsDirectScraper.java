@@ -96,7 +96,8 @@ public class LaptopsDirectScraper extends Thread{
                                 product.setBrand(brand);
 
                                 //Get the product description
-                                Elements descriptionClass = prods.get(i).select(".productInfo");
+                                Elements descriptionClass = prods.get(i).select("div.productInfo");
+                                Elements descriptionUl = descriptionClass.get(0).select("ul");
                                 String description = descriptionClass.text();
 
                                 // Store into database
@@ -162,7 +163,6 @@ public class LaptopsDirectScraper extends Thread{
                                     // Update laptop
                                     session.update(laptop);
                                     session.update(product);
-                                    session.update(url);
                                     session.close();
                                 }
                             }

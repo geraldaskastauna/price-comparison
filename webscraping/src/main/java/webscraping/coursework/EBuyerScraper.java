@@ -161,7 +161,6 @@ public class EBuyerScraper extends Thread{
                                     // Update laptop
                                     session.update(laptop);
                                     session.update(product);
-                                    session.update(url);
                                     session.close();
                                 }
                             }

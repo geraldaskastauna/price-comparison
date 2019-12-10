@@ -33,8 +33,9 @@ public class ScraperManager {
     
     // Method to start the threads
     public void startScraping() {
-        for(Thread scraper : scrapingThreads){
+        scrapingThreads.get(3).start();
+        /*for(Thread scraper : scrapingThreads){
             scraper.start();
-        }
+        } */
     }
 }

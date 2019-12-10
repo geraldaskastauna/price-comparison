@@ -16,14 +16,17 @@ var connectionPool = mysql.createPool({
     connectionLimit: 1,
     host: "localhost",
     user: "root",
-    password: "",
+    password: "root",
     database: "price_comparison",
     debug: false
 });
 
 //Set up the application to handle GET requests sent to the user path
-app.get('/cereals/*', handleGetRequest);//Subfolders
-app.get('/cereals', handleGetRequest);
+app.get('/laptop/*', handleGetRequest);//Subfolders
+app.get('/laptop', handleGetRequest);
+
+//Serve up static pages from public folder
+app.use(express.static('public'));
 
 //Start the app listening on port 8080
 app.listen(8080);
@@ -50,14 +53,14 @@ function handleGetRequest(request, response){
     var pathEnd = pathArray[pathArray.length - 1];
 
     //If path ends with 'cereals' we return all cereals
-    if(pathEnd === 'cereals'){
-        getTotalCerealsCount(response, numItems, offset);//This function calls the getAllCereals function in its callback
+    if(pathEnd === 'laptop'){
+        getTotalLaptopCount(response, numItems, offset);//This function calls the getAllCereals function in its callback
         return;
     }
 
     //If path ends with cereals/, we return all cereals
-    if (pathEnd === '' && pathArray[pathArray.length - 2] === 'cereals'){
-        getTotalCerealsCount(response, numItems, offset);//This function calls the getAllCereals function in its callback
+    if (pathEnd === '' && pathArray[pathArray.length - 2] === 'laptop'){
+        getTotalLaptopCount(response, numItems, offset);//This function calls the getAllCereals function in its callback
         return;
     }
 
@@ -76,15 +79,17 @@ function handleGetRequest(request, response){
 
 /** Returns all of the cereals, possibly with a limit on the total number of items returned and the offset (to
  *  enable pagination). This function should be called in the callback of getTotalCerealsCount  */
-function getAllCereals(response, totNumItems, numItems, offset){
+function getAllLaptops(response, totNumItems, numItems, offset){
+
     //Select the cereals data using JOIN to convert foreign keys into useful data.
-    var sql = "SELECT cereals.id, brands.name, product_type.name, product_type.description, cereals.weight, cereals.price " +
-    "FROM ( (cereals INNER JOIN product_type ON cereals.product_type_id=product_type.id) " +
-    "INNER JOIN brands ON cereals.brand_id=brands.id ) ";
+    var sql = "SELECT laptop.id, product.brand, product.description, product.image_url, url.domain, url.query_string laptop.price " +
+    "FROM ( (laptop INNER JOIN product ON laptop.product_id=product.id) " +
+    "INNER JOIN url ON laptop.url_id=url.id ) " +
+    "ORDER BY laptop.id ";
 
     //Limit the number of results returned, if this has been specified in the query string
     if(numItems !== undefined && offset !== undefined ){
-        sql += "ORDER BY cereals.id LIMIT " + numItems + " OFFSET " + offset;
+        sql += "LIMIT " + numItems + " OFFSET " + offset;
     }
 
     //Execute the query
@@ -100,7 +105,7 @@ function getAllCereals(response, totNumItems, numItems, offset){
 
         //Create JavaScript object that combines total number of items with data
         var returnObj = {totNumItems: totNumItems};
-        returnObj.data = result; //Array of data from database
+        returnObj.laptop = result; //Array of data from database
 
         //Return results in JSON format
         response.json(returnObj);
@@ -111,8 +116,8 @@ function getAllCereals(response, totNumItems, numItems, offset){
 /** When retrieving all cereals we start by retrieving the total number of cereals
     The database callback function will then call the function to get the cereal data
     with pagination */
-function getTotalCerealsCount(response, numItems, offset){
-    var sql = "SELECT COUNT(*) FROM cereals";
+function getTotalLaptopCount(response, numItems, offset){
+    var sql = "SELECT COUNT(*) FROM laptop";
 
     //Execute the query and call the anonymous callback function.
     connectionPool.query(sql, function (err, result) {
@@ -129,7 +134,7 @@ function getTotalCerealsCount(response, numItems, offset){
         var totNumItems = result[0]['COUNT(*)'];
 
         //Call the function that retrieves all cereals
-        getAllCereals(response, totNumItems, numItems, offset);
+        getAllLaptop(response, totNumItems, numItems, offset);
     });
 }
 
@@ -137,10 +142,10 @@ function getTotalCerealsCount(response, numItems, offset){
 /** Returns the cereal with the specified ID */
 function getCereal(response, id){
     //Build SQL query to select cereal with specified id.
-    var sql = "SELECT cereals.id, brands.name, product_type.name, product_type.description, cereals.weight, cereals.price " +
-        "FROM ( (cereals INNER JOIN product_type ON cereals.product_type_id=product_type.id) " +
-        "INNER JOIN brands ON cereals.brand_id=brands.id ) " +
-        "WHERE cereals.id=" + id;
+    var sql = "SELECT laptop.id, product.brand, product.description, product.image_url, url.domain, url.query_string laptop.price " +
+      "FROM ( (laptop INNER JOIN product ON laptop.product_id=product.id) " +
+      "INNER JOIN url ON laptop.url_id=url.id ) " +
+      "WHERE laptop.id=" + id;
 
     //Execute the query
     connectionPool.query(sql, function (err, result) {

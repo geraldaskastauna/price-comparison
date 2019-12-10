@@ -35,7 +35,7 @@ public class Product implements Serializable {
     private String imageUrl; 
     
     // Foreign key mapping
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id")
     Set<Laptop> laptop;
     

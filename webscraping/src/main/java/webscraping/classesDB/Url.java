@@ -28,7 +28,7 @@ public class Url implements Serializable {
     private String queryString;
     
     // Foreign key mapping
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "url_id")
     Set<Laptop> laptop;
     

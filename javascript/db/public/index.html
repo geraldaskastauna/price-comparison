@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue with Web Service Demo</title>
+
+    <!-- Vue development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Axios library -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <h1>Cereals</h1>
+        <p v-for="cereal in cereals">
+            <b>id</b>: {{cereal.id}};
+            <b>name</b>: {{cereal.name}};
+            <b>weight</b>: {{cereal.weight}};
+            <b>price</b>: {{cereal.price}}
+        </p>
+    </div>
+
+    <script>
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                cereals: []
+            },
+            methods : {
+                //Get all the cereals from the web service using Axios.
+                loadAllCereals: function (){
+                    var localApp = this;
+                    axios.get('/cereals')//Send GET request to cereals path
+                        .then(function (response) {//Request successful
+                            //Point cereals in data to returned array of cereals
+                            localApp.cereals = response.data.cereals;
+                            console.log(JSON.stringify(response.data.cereals));
+                        })
+                        .catch(function (error) {
+                            //Handle error
+                            console.log(error);
+                        });
+                 }
+            },
+            created: function(){//Vue lifecycle hook, called when data is loaded.
+                //Load cereals from web service
+                this.loadAllCereals();
+
+                //Refresh cereals every 5 seconds
+                setInterval(this.loadAllCereals, 5000);
+            }
+        })
+
+    </script>
+
+</body>
+</html>
