@@ -50,6 +50,14 @@ public class Laptop implements Serializable {
         return price;
     }
     
+    public Product getProductObj(){
+        return product;
+    }
+    
+    public Url getUrlObj(){
+        return url;
+    }
+    
     public void setProduct(Product product){
         this.product = product;
     }
