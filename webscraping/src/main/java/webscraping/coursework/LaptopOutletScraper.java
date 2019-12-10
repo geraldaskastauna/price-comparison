@@ -146,7 +146,7 @@ public class LaptopOutletScraper extends Thread{
                                     //Close the session and release database connection
                                     session.close();
                                 } else {
-                                    // Duplice exists
+                                    // Duplicate exists
                                     // Update laptop
                                     session.update(laptop);
                                     session.update(product);
