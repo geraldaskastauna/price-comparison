@@ -16,7 +16,12 @@ import org.jsoup.select.Elements;
 
 /**
  *
- * @author linux
+ * @author Geraldas Kastauna
+ */
+
+/**
+ * 
+ * Thread that scrapes laptopoutlet.co.uk website for laptops
  */
 public class LaptopOutletScraper extends Thread{
         //Specifies the interval between HTTP requests to the server in seconds.
@@ -37,7 +42,7 @@ public class LaptopOutletScraper extends Thread{
         LaptopDao laptopDao = new LaptopDao();
         
         /**
-         * Run method to start box.co.uk scraper
+         * Run method to start laptopoutlet.co.uk scraper
          */
         public void run() {
             // Declare a domain name

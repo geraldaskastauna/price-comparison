@@ -8,6 +8,11 @@ import org.hibernate.SessionFactory;
  *
  * @author Geraldas Kastauna
  */
+
+/**
+ * 
+ * Class that represents Laptop data access object (DAO)
+ */
 public class LaptopDao {
     //Creates new Sessions when we need to interact with the database
     private SessionFactory sessionFactory;

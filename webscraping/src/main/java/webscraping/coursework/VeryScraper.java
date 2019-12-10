@@ -13,6 +13,11 @@ import org.jsoup.nodes.Element;
  *
  * @author Geraldas Kastauna
  */
+
+/**
+ * 
+ * Thread that scrapes very.co.uk website for laptops
+ */
 public class VeryScraper extends Thread {
         //Specifies the interval between HTTP requests to the server in seconds.
         private int crawlDelay = 5;
@@ -32,7 +37,7 @@ public class VeryScraper extends Thread {
         LaptopDao laptopDao = new LaptopDao();
         
         /**
-         * Run method to start box.co.uk scraper
+         * Run method to start very.co.uk scraper
          */
         public void run() { 
             // Declare a domain name

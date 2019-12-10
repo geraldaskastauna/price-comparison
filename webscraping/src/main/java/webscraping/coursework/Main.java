@@ -7,6 +7,7 @@ import org.springframework.context.annotation.*;
  */
 
 /**
+ *
  * Contains main method for application
  */
 public class Main {
@@ -15,6 +16,7 @@ public class Main {
     }
     
     /** 
+     *
      * Uses Spring Annotation configuration to set up and run application 
      */
     static void runThreadsAnnotations(){ 

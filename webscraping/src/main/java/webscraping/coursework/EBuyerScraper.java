@@ -13,6 +13,11 @@ import org.jsoup.select.Elements;
  *
  * @author Geraldas Kastauna
  */
+
+/**
+ * 
+ * Thread that scrapes ebuyer.com website for laptops
+ */
 public class EBuyerScraper extends Thread{
         //Specifies the interval between HTTP requests to the server in seconds.
         private int crawlDelay = 5;
@@ -32,7 +37,7 @@ public class EBuyerScraper extends Thread{
         LaptopDao laptopDao = new LaptopDao();
         
         /**
-         * Run method to start box.co.uk scraper
+         * Run method to start ebuyer.com scraper
          */
         public void run() {
             // Declare a domain name

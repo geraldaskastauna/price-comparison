@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
  */
 
 /**
+ * 
  * AppConfig class that holds SPRING beans.
  */
 @Configuration

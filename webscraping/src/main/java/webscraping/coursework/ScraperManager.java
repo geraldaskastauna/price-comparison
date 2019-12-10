@@ -9,6 +9,11 @@ import java.util.logging.Logger;
  *
  * @author Geraldas Kastauna
  */
+
+/**
+ * 
+ * ScraperManager class that hold and starts all scrapers
+ */
 public class ScraperManager {
     // Empty thread list
     List<Thread> scrapingThreads; // no initialization here: it's done in the constructor

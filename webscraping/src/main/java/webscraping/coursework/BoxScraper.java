@@ -13,6 +13,11 @@ import org.hibernate.Session;
  *
  * @author Geraldas Kastauna
  */
+
+/**
+ * 
+ * Thread that scrapes box.co.uk website for laptops
+ */
 public class BoxScraper extends Thread {
         //Specifies the interval between HTTP requests to the server in seconds.
         private final int crawlDelay = 5;
