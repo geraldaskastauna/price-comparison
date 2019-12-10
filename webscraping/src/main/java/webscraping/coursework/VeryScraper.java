@@ -123,18 +123,27 @@ public class VeryScraper extends Thread {
                                 // Start transaction
                                 session.beginTransaction();
 
-                                // Add laptop, url and product to database (need to commit)
-                                laptop.setProduct(product);
-                                laptop.setUrl(url);
-                                session.save(url);
-                                session.save(product);
-                                session.save(laptop);
+                                if(!laptopDao.duplicateExist(domain, queryString, session)){
+                                    // Foreign keys
+                                    laptop.setProduct(product);
+                                    laptop.setUrl(url);
 
-                                //Commit transaction to save it to database
-                                session.getTransaction().commit();
+                                    // Add laptop, url and product to database (need to commit)
+                                    session.save(url);
+                                    session.save(product);
+                                    session.save(laptop);
 
-                                //Close the session and release database connection
-                                session.close();
+                                    //Commit transaction to save it to database
+                                    session.getTransaction().commit();
+
+                                    //Close the session and release database connection
+                                    session.close();
+                                } else {
+                                    session.update(laptop);
+                                    session.update(product);
+                                    session.update(url);
+                                    session.close();
+                                }
                             }
                         }
                     }

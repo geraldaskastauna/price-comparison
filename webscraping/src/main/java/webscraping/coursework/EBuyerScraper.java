@@ -134,20 +134,27 @@ public class EBuyerScraper extends Thread{
                                 // Start transaction
                                 session.beginTransaction();
 
-                                // Foreign keys
-                                laptop.setProduct(product);
-                                laptop.setUrl(url);
+                                if(!laptopDao.duplicateExist(domain, queryString, session)){
+                                    // Foreign keys
+                                    laptop.setProduct(product);
+                                    laptop.setUrl(url);
 
-                                // Add laptop, url and product to database (need to commit)
-                                session.save(url);
-                                session.save(product);
-                                session.save(laptop);
+                                    // Add laptop, url and product to database (need to commit)
+                                    session.save(url);
+                                    session.save(product);
+                                    session.save(laptop);
 
-                                //Commit transaction to save it to database
-                                session.getTransaction().commit();
+                                    //Commit transaction to save it to database
+                                    session.getTransaction().commit();
 
-                                //Close the session and release database connection
-                                session.close();
+                                    //Close the session and release database connection
+                                    session.close();
+                                } else {
+                                    session.update(laptop);
+                                    session.update(product);
+                                    session.update(url);
+                                    session.close();
+                                }
                             }
                         }
                     }
