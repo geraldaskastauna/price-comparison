@@ -21,8 +21,23 @@ var connectionPool = mysql.createPool({
     debug: false
 });
 
+// Display all laptops
+/*
+app.get('/laptops/*', (request, response) => {
+    connectionPool.query('SELECT laptop.id, product.brand, product.description, product.image_url, url.domain, url.query_string, laptop.price ' +
+    'FROM ( (laptop INNER JOIN product ON laptop.product_id=product.id) ' +
+    'INNER JOIN url ON laptop.url_id=url.id ) ' +
+    'ORDER BY laptop.id ', (error, result) => {
+        if (error) throw error;
+
+        response.send(result);
+    });
+});
+*/
+
 //Set up the application to handle GET requests sent to the user path
-app.get('/', handleGetRequest);
+app.get('/laptops/*', handleGetRequest);//Subfolders
+app.get('/laptops', handleGetRequest);
 
 //Serve up static pages from public folder
 app.use(express.static('public'));
@@ -51,13 +66,13 @@ function handleGetRequest(request, response){
     var pathEnd = pathArray[pathArray.length - 1];
 
     //If path ends with 'laptop' we return all laptop
-    if(pathEnd === 'laptop'){
+    if(pathEnd === 'laptops'){
         getTotalLaptopCount(response, numItems, offset);//This function calls the getAlllaptop function in its callback
         return;
     }
 
     //If path ends with laptop/, we return all laptop
-    if (pathEnd === '' && pathArray[pathArray.length - 2] === 'laptop'){
+    if (pathEnd === '' && pathArray[pathArray.length - 2] === 'laptops'){
         getTotalLaptopCount(response, numItems, offset);//This function calls the getAlllaptop function in its callback
         return;
     }
@@ -80,9 +95,9 @@ function handleGetRequest(request, response){
 function getAllLaptop(response, totNumItems, numItems, offset){
     //Select the laptop data using JOIN to convert foreign keys into useful data.
     var sql = "SELECT laptop.id, product.brand, product.description, product.image_url, url.domain, url.query_string, laptop.price " +
-    "FROM ( (laptop INNER JOIN product ON laptop.produc_id=product.id) " +
+    "FROM ( (laptop INNER JOIN product ON laptop.product_id=product.id) " +
     "INNER JOIN url ON laptop.url_id=url.id ) " +
-    "ORDER BY laptop.id ";
+    "ORDER BY laptop.id";
 
     //Limit the number of results returned, if this has been specified in the query string
     if(numItems !== undefined && offset !== undefined ){
@@ -131,7 +146,7 @@ function getTotalLaptopCount(response, numItems, offset){
         var totNumItems = result[0]['COUNT(*)'];
 
         //Call the function that retrieves all laptop
-        getAlllaptop(response, totNumItems, numItems, offset);
+        getAllLaptop(response, totNumItems, numItems, offset);
     });
 }
 
@@ -140,7 +155,7 @@ function getTotalLaptopCount(response, numItems, offset){
 function getLaptop(response, id){
     //Build SQL query to select Laptop with specified id.
     var sql = "SELECT laptop.id, product.brand, product.description, product.image_url, url.domain, url.query_string, laptop.price " +
-    "FROM ( (laptop INNER JOIN product ON laptop.produc_id=product.id) " +
+    "FROM ( (laptop INNER JOIN product ON laptop.product_id=product.id) " +
     "INNER JOIN url ON laptop.url_id=url.id ) " +
     "WHERE laptop.id=" + id;
 

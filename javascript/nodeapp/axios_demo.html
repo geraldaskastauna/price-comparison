@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
     <title>Axios Demo</title>
 
     <!-- Axios library -->
@@ -13,11 +15,11 @@
 
         /** Retreives Laptop data from web service */
         function loadLaptop() {
-            axios.get('/laptop')//Send GET request to laptop path
+            axios.get('/laptops')//Send GET request to laptop path
                 .then(function (response) {//Request successful
                     //Output laptop data
                     console.log("---------- Data Received from Web Service -------------");
-                    console.log(JSON.stringify(response.data.laptop));
+                    console.log(JSON.stringify(response.data.laptops));
                 })
                 .catch(function (error) {
                     //Handle error

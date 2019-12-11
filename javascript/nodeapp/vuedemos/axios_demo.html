@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Axios Demo</title>
+
+    <!-- Axios library -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+    <script>
+
+        window.onload = loadCereals;
+
+        function loadCereals() {
+            axios.get('/cereals')//Send GET request to cereals path
+                .then(function (response) {//Request successful
+                    //Output cereals data
+                    console.log(JSON.stringify(response.data.cereals));
+                })
+                .catch(function (error) {
+                    //Handle error
+                    console.log(error);
+                });
+        }
+
+
+    </script>
+
+
+</body>
+</html>
+

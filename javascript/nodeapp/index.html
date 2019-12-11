@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
     <title>Vue with Web Service Demo</title>
 
     <!-- Vue development version, includes helpful console warnings -->
@@ -32,11 +34,11 @@
                 //Get all the laptop from the web service using Axios.
                 loadAllLaptop: function (){
                     var localApp = this;
-                    axios.get('/laptop')//Send GET request to laptop path
+                    axios.get('/laptops')//Send GET request to laptop path
                         .then(function (response) {//Request successful
                             //Point laptop in data to returned array of laptop
                             localApp.laptop = response.data.laptop;
-                            console.log(JSON.stringify(response.data.laptop));
+                            console.log(JSON.stringify(response.data.laptops));
                         })
                         .catch(function (error) {
                             //Handle error
