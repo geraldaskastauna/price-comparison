@@ -24,7 +24,7 @@ class ScrapingTest {
     
     @Test
     @DisplayName("Test setting classes elements")
-    void settingProductElements() {
+    void settingProductElementsTest() {
         // Instance of classes that we want to test
         Laptop laptop = new Laptop();
         Product product = new Product();
@@ -52,7 +52,7 @@ class ScrapingTest {
     
     @Test
     @DisplayName("Test sessionFactory method from LaptopDao class (DATABASE REQUIRED)")
-    void sessionFactoryMethod() {
+    void sessionFactoryMethodTest() {
         // Instance of a class that we want to test
         LaptopDao laptopDao = new LaptopDao();
         AppConfig app = new AppConfig();
@@ -70,7 +70,7 @@ class ScrapingTest {
     
     @Test
     @DisplayName("Test setting threads in ScraperManager class")
-    void scraperManagerList(){
+    void scraperManagerListTest(){
         // Instance of the class we want to test
         ScraperManager manager = new ScraperManager();
         
@@ -100,7 +100,7 @@ class ScrapingTest {
     
     @Test
     @DisplayName("Test if threads are running")        
-    void scrapingThreads(){
+    void scrapingThreadsTest(){
         // Instance of threads that we want to test (All of them)
         BoxScraper box = new BoxScraper();
         LaptopOutletScraper laptopOutlet = new LaptopOutletScraper();
@@ -133,7 +133,7 @@ class ScrapingTest {
     
     @Test
     @DisplayName("Test scraperManager bean from AppConfig class")
-    void test() {
+    void scaperManagerTest() {
         //Instruct Spring to create and wire beans using XML file
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 

@@ -26,7 +26,10 @@
   "homepage": "https://github.com/geraldaskastauna/price-comparison#readme",
   "dependencies": {
     "axios": "^0.19.0",
+    "bootstrap": "^4.4.1",
+    "bootstrap-vue": "^2.1.0",
     "cookie-parser": "^1.4.4",
+    "core-js": "^3.4.8",
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
@@ -34,6 +37,8 @@
     "lodash": "^4.17.15",
     "morgan": "^1.9.1",
     "mysql": "^2.17.1",
-    "pug": "^2.0.4"
+    "pug": "^2.0.4",
+    "vue": "^2.6.10",
+    "vue-router": "^3.1.3"
   }
 }
