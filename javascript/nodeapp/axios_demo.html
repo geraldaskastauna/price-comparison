@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Axios Demo</title>
+
+    <!-- Axios library -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <script>
+        //Load laptop after window has loaded.
+        window.onload = loadLaptop;
+
+        /** Retreives Laptop data from web service */
+        function loadLaptop() {
+            axios.get('/laptop')//Send GET request to laptop path
+                .then(function (response) {//Request successful
+                    //Output laptop data
+                    console.log("---------- Data Received from Web Service -------------");
+                    console.log(JSON.stringify(response.data.laptop));
+                })
+                .catch(function (error) {
+                    //Handle error
+                    console.log(error);
+                });
+        }
+    </script>
+</body>
+</html>
