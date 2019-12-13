@@ -26,3 +26,4 @@
         <mapping class="webscraping.coursework.Url"/>
     </session-factory>
 </hibernate-configuration>
+

@@ -14,7 +14,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "product")
-/** Holds details about product */
+/** 
+ * 
+ * Holds details about product 
+ */
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +42,10 @@ public class Product implements Serializable {
     @JoinColumn(name = "product_id")
     Set<Laptop> laptop;
     
-    /** Empty constructor */
+    /**
+     * 
+     * Empty constructor 
+     */
     public Product(){
 
     }
