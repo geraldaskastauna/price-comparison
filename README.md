@@ -1,5 +1,12 @@
 # price-comparison
-Price comparison website for laptops using java webscraping with maven, spring, hibernate, vue.js and html/css
+Price comparison website for laptops using webscraping with:
+Java
+Maven
+Spring
+Hibernate
+Node.js
+Vue.js
+HTML5/CSS
 
 Project report is located inside the 'project_report' folder
 MYSQL DATABASE is located inside the 'mysql_database' folder
