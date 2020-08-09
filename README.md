@@ -7,6 +7,7 @@ Price comparison website for laptops using webscraping written with:
 5. Node.js
 6. Vue.js
 7. HTML5/CSS
+8. MySQL
 
 **PROJECT REPORT** is located inside the 'project_report' folder\
 **MYSQL DATABASE** is located inside the 'mysql_database' folder\
